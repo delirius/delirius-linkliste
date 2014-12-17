@@ -1,0 +1,19 @@
+/* adjust styling of favicon image */
+.favicon-img {
+height:16px;
+margin-right:6px;
+width:16px;
+float:left;
+}
+
+
+
+/* adjust styling of span wrapper if needed */
+.favicon-wrapper {
+}
+
+
+.linkliste_category { margin: 20px 0 8px 0; font-size: 14px; font-weight: 700;}
+.linkliste_wrapper { margin: 0 0 12px 0;}
+.linkliste_title { }
+.linkliste_text { margin: 0 20px 0 0; }
