@@ -1,4 +1,7 @@
-<?php if (!defined('TL_ROOT')) die('You can not access this file directly!');
+<?php
+
+if (!defined('TL_ROOT'))
+    die('You can not access this file directly!');
 
 /**
  * Contao Open Source CMS
@@ -27,120 +30,132 @@
  * @license    GNU/LGPL
  * @filesource
  */
-
-
 /**
  * Table tl_link_category
  */
 $GLOBALS['TL_DCA']['tl_link_category'] = array
-        (
-
+    (
 // Config
-        'config' => array
+    'config' => array
         (
-                'dataContainer'               => 'Table',
-                'ctable'                      => array('tl_link_data'),
-                'label'                       => &$GLOBALS['TL_LANG']['tl_link_category']['category'],
+        'dataContainer' => 'Table',
+        'ctable' => array('tl_link_data'),
+        'label' => &$GLOBALS['TL_LANG']['tl_link_category']['category'],
+        'sql' => array
+            (
+            'keys' => array
+                (
+                'id' => 'primary'
+            )
         ),
-
+    ),
 // List
-        'list' => array
+    'list' => array
         (
-                'sorting' => array
-                (
-                        'mode'                    => 5,
-                        'fields'                  => array('sorting'),
-                        'flag'                    => 1,
-
-                ),
-                'label' => array
-                (
-                        'fields'                  => array('title'),
-                        'format'                  => '<strong>%s</strong>'
-                ),
-                'global_operations' => array
-                (
-                        'all' => array
-                        (
-                                'label'               => &$GLOBALS['TL_LANG']['MSC']['all'],
-                                'href'                => 'act=select',
-                                'class'               => 'header_edit_all',
-                                'attributes'          => 'onclick="Backend.getScrollOffset();" accesskey="e"'
-                        )
-                ),
-                'operations' => array
-                (
-                        'edit' => array
-                        (
-                                'label'               => &$GLOBALS['TL_LANG']['tl_link_category']['edit'],
-                                'href'                => 'table=tl_link_data',
-                                'icon'                => 'edit.gif',
-                                'attributes'          => 'class="contextmenu"'
-                        ),
-
-                        'copy' => array
-                        (
-                                'label'               => &$GLOBALS['TL_LANG']['tl_link_category']['copy'],
-                                'href'                => 'act=copy',
-                                'icon'                => 'copy.gif'
-                        ),
-                        'cut' => array
-                        (
-                                'label'               => &$GLOBALS['TL_LANG']['tl_link_data']['cut'],
-                                'href'                => 'act=paste&amp;mode=cut',
-                                'icon'                => 'cut.gif'
-                        ),
-                        'delete' => array
-                        (
-                                'label'               => &$GLOBALS['TL_LANG']['tl_link_category']['delete'],
-                                'href'                => 'act=delete',
-                                'icon'                => 'delete.gif',
-                                'attributes'          => 'onclick="if (!confirm(\'' . $GLOBALS['TL_LANG']['MSC']['deleteConfirm'] . '\')) return false; Backend.getScrollOffset();"'
-                        ),
-                        'show' => array
-                        (
-                                'label'               => &$GLOBALS['TL_LANG']['tl_link_category']['show'],
-                                'href'                => 'act=show',
-                                'icon'                => 'show.gif'
-                        )
-                )
+        'sorting' => array
+            (
+            'mode' => 5,
+            'fields' => array('sorting'),
+            'flag' => 1,
         ),
-
-// Palettes
-        'palettes' => array
-        (
-                '__selector__'                => array(''),
-                'default'                     => '{category_legend},published,title'
+        'label' => array
+            (
+            'fields' => array('title'),
+            'format' => '<strong>%s</strong>'
         ),
-
-// Subpalettes
-        'subpalettes' => array
-        (
-                ''                            => ''
+        'global_operations' => array
+            (
+            'all' => array
+                (
+                'label' => &$GLOBALS['TL_LANG']['MSC']['all'],
+                'href' => 'act=select',
+                'class' => 'header_edit_all',
+                'attributes' => 'onclick="Backend.getScrollOffset();" accesskey="e"'
+            )
         ),
-
-// Fields
-        'fields' => array
-        (
-                'published' => array
+        'operations' => array
+            (
+            'edit' => array
                 (
-                        'label'                   => &$GLOBALS['TL_LANG']['tl_link_category']['published'],
-                        'exclude'                 => true,
-                        'inputType'               => 'checkbox',
-                        'default'               => '1',
-                        'eval'                    => array('mandatory'=>false, 'maxlength'=>255)
-                ),
-                'title' => array
+                'label' => &$GLOBALS['TL_LANG']['tl_link_category']['edit'],
+                'href' => 'table=tl_link_data',
+                'icon' => 'edit.gif',
+                'attributes' => 'class="contextmenu"'
+            ),
+            'copy' => array
                 (
-                        'label'                   => &$GLOBALS['TL_LANG']['tl_link_category']['title'],
-                        'exclude'                 => true,
-                        'inputType'               => 'text',
-                        'eval'                    => array('mandatory'=>true, 'maxlength'=>255)
-                )
-
+                'label' => &$GLOBALS['TL_LANG']['tl_link_category']['copy'],
+                'href' => 'act=copy',
+                'icon' => 'copy.gif'
+            ),
+            'cut' => array
+                (
+                'label' => &$GLOBALS['TL_LANG']['tl_link_data']['cut'],
+                'href' => 'act=paste&amp;mode=cut',
+                'icon' => 'cut.gif'
+            ),
+            'delete' => array
+                (
+                'label' => &$GLOBALS['TL_LANG']['tl_link_category']['delete'],
+                'href' => 'act=delete',
+                'icon' => 'delete.gif',
+                'attributes' => 'onclick="if (!confirm(\'' . $GLOBALS['TL_LANG']['MSC']['deleteConfirm'] . '\')) return false; Backend.getScrollOffset();"'
+            ),
+            'show' => array
+                (
+                'label' => &$GLOBALS['TL_LANG']['tl_link_category']['show'],
+                'href' => 'act=show',
+                'icon' => 'show.gif'
+            )
         )
+    ),
+// Palettes
+    'palettes' => array
+        (
+        '__selector__' => array(''),
+        'default' => '{category_legend},published,title'
+    ),
+// Subpalettes
+    'subpalettes' => array
+        (
+        '' => ''
+    ),
+// Fields
+    'fields' => array
+        (
+        'id' => array
+            (
+            'sql' => "int(10) unsigned NOT NULL auto_increment"
+        ),
+        'pid' => array
+            (
+            'sql' => "int(10) unsigned NOT NULL default '0'"
+        ),
+        'sorting' => array
+            (
+            'sql' => "int(10) unsigned NOT NULL default '0'"
+        ),
+        'tstamp' => array
+            (
+            'sql' => "int(10) unsigned NOT NULL default '0'"
+        ),
+        'published' => array
+            (
+            'label' => &$GLOBALS['TL_LANG']['tl_link_category']['published'],
+            'exclude' => true,
+            'inputType' => 'checkbox',
+            'default' => '1',
+            'eval' => array('mandatory' => false, 'maxlength' => 255),
+            'sql' => "char(1) NOT NULL default ''"
+        ),
+        'title' => array
+            (
+            'label' => &$GLOBALS['TL_LANG']['tl_link_category']['title'],
+            'exclude' => true,
+            'inputType' => 'text',
+            'eval' => array('mandatory' => true, 'maxlength' => 255),
+            'sql' => "varchar(255) NOT NULL default ''"
+        )
+    )
 );
-
-
-
 ?>

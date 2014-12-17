@@ -1,4 +1,7 @@
-<?php if (!defined('TL_ROOT')) die('You can not access this file directly!');
+<?php
+
+if (!defined('TL_ROOT'))
+    die('You can not access this file directly!');
 
 /**
  * TYPOlight webCMS
@@ -25,12 +28,9 @@
  * @license    LGPL
  * @filesource
  */
-
-
 /**
  * Add palettes to tl_module
  */
-
 $GLOBALS['TL_DCA']['tl_module']['palettes']['delirius_linkliste'] = '{title_legend},name,type;{option_legend},delirius_linkliste_categories,delirius_linkliste_fesort,delirius_linkliste_template,delirius_linkliste_favicon,delirius_linkliste_standardfavicon;{expert_legend:hide},cssID,space;style';
 
 
@@ -39,58 +39,61 @@ $GLOBALS['TL_DCA']['tl_module']['palettes']['delirius_linkliste'] = '{title_lege
 /**
  * Add fields to tl_module
  */
-
 $GLOBALS['TL_DCA']['tl_module']['fields']['delirius_linkliste_categories'] = array
-        (
-        'label'                   => &$GLOBALS['TL_LANG']['tl_module']['delirius_linkliste_categories'],
-        'exclude'                 => true,
-        'inputType'               => 'checkbox',
-        'foreignKey'              => 'tl_link_category.title',
-        'eval'                    => array('multiple'=>true, 'mandatory'=>false)
+    (
+    'label' => &$GLOBALS['TL_LANG']['tl_module']['delirius_linkliste_categories'],
+    'exclude' => true,
+    'inputType' => 'checkbox',
+    'foreignKey' => 'tl_link_category.title',
+    'eval' => array('multiple' => true, 'mandatory' => false),
+    'sql' => "text NULL"
 );
 
 $GLOBALS['TL_DCA']['tl_module']['fields']['delirius_linkliste_fesort'] = array
-        (
-        'label'                   => &$GLOBALS['TL_LANG']['tl_module']['delirius_linkliste_fesort'],
-        'exclude'                 => true,
-        'inputType'               => 'select',
-        'options'                 => array('random', 'order', 'url'),
-        'reference'               => &$GLOBALS['TL_LANG']['tl_module']['fesort_option'],
-        'eval'                    => array('mandatory'=>true,'tl_class'=>'w50')
+    (
+    'label' => &$GLOBALS['TL_LANG']['tl_module']['delirius_linkliste_fesort'],
+    'exclude' => true,
+    'inputType' => 'select',
+    'options' => array('random', 'order', 'url'),
+    'reference' => &$GLOBALS['TL_LANG']['tl_module']['fesort_option'],
+    'eval' => array('mandatory' => true, 'tl_class' => 'w50'),
+    'sql' => "varchar(32) NOT NULL default ''"
 );
 
 $GLOBALS['TL_DCA']['tl_module']['fields']['delirius_linkliste_template'] = array
-        (
-        'label'                   => &$GLOBALS['TL_LANG']['tl_module']['delirius_linkliste_template'],
-        'default'                 => 'linkliste_standard',
-        'exclude'                 => true,
-        'inputType'               => 'select',
-        'options_callback'        => array('tl_module_linkliste', 'getTemplates'),
-        'eval'                    => array('tl_class'=>'w50')
+    (
+    'label' => &$GLOBALS['TL_LANG']['tl_module']['delirius_linkliste_template'],
+    'default' => 'linkliste_standard',
+    'exclude' => true,
+    'inputType' => 'select',
+    'options_callback' => array('tl_module_linkliste', 'getTemplates'),
+    'eval' => array('tl_class' => 'w50'),
+    'sql' => "varchar(64) NOT NULL default ''"
 );
 
 
 $GLOBALS['TL_DCA']['tl_module']['fields']['delirius_linkliste_favicon'] = array
-        (
-        'label'                   => &$GLOBALS['TL_LANG']['tl_module']['delirius_linkliste_favicon'],
-        'exclude'                 => true,
-        'inputType'               => 'checkbox',
-        'default'               => '1',
-        'eval'                    => array('mandatory'=>false)
+    (
+    'label' => &$GLOBALS['TL_LANG']['tl_module']['delirius_linkliste_favicon'],
+    'exclude' => true,
+    'inputType' => 'checkbox',
+    'default' => '1',
+    'eval' => array('mandatory' => false),
+    'sql' => "char(1) NOT NULL default ''"
 );
 
 $GLOBALS['TL_DCA']['tl_module']['fields']['delirius_linkliste_standardfavicon'] = array
-        (
-        'label'                   => &$GLOBALS['TL_LANG']['tl_module']['delirius_linkliste_standardfavicon'],
-        'exclude'                 => true,
-        'inputType'               => 'fileTree',
-        'eval'                    => array('files'=>true, 'fieldType'=>'radio', 'filesOnly' => true, 'extensions'=> 'jpg,jpeg,png,gif,ico')
+    (
+    'label' => &$GLOBALS['TL_LANG']['tl_module']['delirius_linkliste_standardfavicon'],
+    'exclude' => true,
+    'inputType' => 'fileTree',
+    'eval' => array('files' => true, 'fieldType' => 'radio', 'filesOnly' => true, 'extensions' => 'jpg,jpeg,png,gif,ico'),
+    'sql' => "varchar(255) NOT NULL default ''"
 );
-
-
 
 class tl_module_linkliste extends Backend
 {
+
     /**
      * Return all event templates as array
      * @param object
