@@ -32,12 +32,12 @@
 /**
  * Back end modules
  */
-$GLOBALS['TL_LANG']['MOD']['delirius_linkliste'] = array('Linklist with favicon', '');
+$GLOBALS['TL_LANG']['MOD']['delirius_linkliste'] = array('Linklist with image', '');
 
 /**
  * Front end modules
  */
-$GLOBALS['TL_LANG']['FMD']['delirius_linkliste'] = array('Linklist with favicon', '');
+$GLOBALS['TL_LANG']['FMD']['delirius_linkliste'] = array('Linklist with image', '');
 
 
 /**

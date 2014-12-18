@@ -1,4 +1,7 @@
-<?php if (!defined('TL_ROOT')) die('You can not access this file directly!');
+<?php
+
+if (!defined('TL_ROOT'))
+    die('You can not access this file directly!');
 
 /**
  * Contao Open Source CMS
@@ -28,7 +31,6 @@
  * @filesource
  */
 
-
 /**
  * Class class_linkliste
  *
@@ -44,7 +46,6 @@ class class_linkliste extends Module
      * @var string
      */
     protected $strTemplate = 'linkliste_standard';
-
 
     /**
      * Generate module
@@ -62,7 +63,7 @@ class class_linkliste extends Module
         if ($objParams->delirius_linkliste_categories != '')
         {
             $arrCat = deserialize($objParams->delirius_linkliste_categories);
-            $strAnd = ' AND b.id IN ('.implode(',',$arrCat).') ';
+            $strAnd = ' AND b.id IN (' . implode(',', $arrCat) . ') ';
         }
 
         // random, order, title
@@ -93,52 +94,61 @@ class class_linkliste extends Module
 
         $arrLinks = array();
 
-        $query = ' SELECT a.*, b.title AS categorietitle FROM tl_link_data a, tl_link_category b WHERE a.pid=b.id '.$strAnd.' AND b.published = "1" AND a.published = "1" ORDER BY '.$strOrder;
+        $query = ' SELECT a.*, b.title AS categorietitle FROM tl_link_data a, tl_link_category b WHERE a.pid=b.id ' . $strAnd . ' AND b.published = "1" AND a.published = "1" ORDER BY ' . $strOrder;
 
         $objData = $this->Database->execute($query);
         while ($objData->next())
         {
 
             $arrNew = array
-                    (
-                    'categorietitle' => trim($objData->categorietitle),
-                    'url_protocol' => trim($objData->url_protocol),
-                    'url' => trim($objData->url),
-                    'url_text' => trim($objData->url_text),
-                    'description' => trim($objData->description),
+                (
+                'categorietitle' => trim($objData->categorietitle),
+                'url_protocol' => trim($objData->url_protocol),
+                'url' => trim($objData->url),
+                'url_text' => trim($objData->url_text),
+                'description' => trim($objData->description),
             );
-            if(strlen($objData->url_text) == 0)
+            if (strlen($objData->url_text) == 0)
             {
                 $arrNew['url_text'] = $arrNew['url'];
             }
 
-            if(strlen($objData->image) == 0)
+            if (strlen($objData->image) == 0)
             {
-                $arrNew['image'] = '';
-            }
-            else
+                $arrNew['image'] = 'test';
+            } else
             {
-                $arrNew['image'] = $this->getImage($objData->image, '16', '16', 'box');
+                $objFile = \FilesModel::findById($objData->image);
+
+                if ($objFile === null)
+                {
+                   
+                } else
+                {
+                    $arrNew['image'] = $this->getImage($objFile->path, '16', '16', 'box');
+                }
             }
+
 
 
             $arrLinks[$objData->categorietitle][] = $arrNew;
         }
-        $this->Template->linkliste = $arrLinks;
+if (true):
+echo '<pre>';
+print_r($arrLinks);
+echo '</pre>';
+endif;        $this->Template->linkliste = $arrLinks;
         $this->Template->favicon = $objParams->delirius_linkliste_favicon;
 
 
         /* Add JS in HTML head */
         $GLOBALS['TL_HEAD'][] = "<script type=\"text/javascript\">
 <!--//--><![CDATA[//><!--
-window.addEvent('load', function() {\$('favicon').getFavicons('');});
+window.addEvent('load', function() {document.id('favicon').getFavicons('');});
 //--><!]]>
 </script>";
-
-
-
-
     }
+
 }
 
 ?>

@@ -44,7 +44,8 @@ $GLOBALS['TL_DCA']['tl_link_data'] = array
             (
             'keys' => array
                 (
-                'id' => 'primary'
+                'id' => 'primary',
+                'pid' => 'index'
             )
         ),
     ),
@@ -195,7 +196,7 @@ $GLOBALS['TL_DCA']['tl_link_data'] = array
             'exclude' => true,
             'inputType' => 'fileTree',
             'eval' => array('fieldType' => 'radio', 'files' => true, 'filesOnly' => true, 'extensions' => $GLOBALS['TL_CONFIG']['validImageTypes']),
-            'sql' => "binary(16) NULL"
+            'sql' => "blob NULL"
         )
     )
 );

@@ -16,7 +16,8 @@
  */
 ClassLoader::addClasses(array
 (
-	'class_linkliste' => 'system/modules/delirius_linkliste/class_linkliste.php',
+	// Modules
+	'class_linkliste' => 'system/modules/delirius_linkliste/modules/class_linkliste.php',
 ));
 
 
