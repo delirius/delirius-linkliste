@@ -115,14 +115,18 @@ class class_linkliste extends Module
 
             if (strlen($objData->image) == 0)
             {
-                $arrNew['image'] = 'test';
+                $arrNew['image'] = '';
             } else
             {
                 $objFile = \FilesModel::findById($objData->image);
 
                 if ($objFile === null)
                 {
-                   
+                    if (!\Validator::isUuid($objData->image))
+                    {
+                        return '<p class="error">' . $GLOBALS['TL_LANG']['ERR']['version2format'] . '</p>';
+                    }
+
                 } else
                 {
                     $arrNew['image'] = $this->getImage($objFile->path, '16', '16', 'box');
@@ -133,11 +137,7 @@ class class_linkliste extends Module
 
             $arrLinks[$objData->categorietitle][] = $arrNew;
         }
-if (true):
-echo '<pre>';
-print_r($arrLinks);
-echo '</pre>';
-endif;        $this->Template->linkliste = $arrLinks;
+       $this->Template->linkliste = $arrLinks;
         $this->Template->favicon = $objParams->delirius_linkliste_favicon;
 
 

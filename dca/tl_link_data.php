@@ -103,6 +103,13 @@ $GLOBALS['TL_DCA']['tl_link_data'] = array
                 'icon' => 'delete.gif',
                 'attributes' => 'onclick="if (!confirm(\'' . $GLOBALS['TL_LANG']['MSC']['deleteConfirm'] . '\')) return false; Backend.getScrollOffset();"'
             ),
+            'toggle' => array
+                (
+                'label' => &$GLOBALS['TL_LANG']['tl_delirius_kategorien_data']['toggle'],
+                'icon' => 'visible.gif',
+                'attributes' => 'onclick="Backend.getScrollOffset();return AjaxRequest.toggleVisibility(this,%s)"',
+                'button_callback' => array('class_link_dat', 'toggleIcon')
+            ),
             'show' => array
                 (
                 'label' => &$GLOBALS['TL_LANG']['tl_link_data']['show'],
@@ -204,6 +211,55 @@ $GLOBALS['TL_DCA']['tl_link_data'] = array
 class class_link_dat extends Backend
 {
 
+    public function toggleIcon($row, $href, $label, $title, $icon, $attributes)
+    {
+        if (strlen(Input::get('tid')))
+        {
+            $this->toggleVisibility(Input::get('tid'), (Input::get('state') == 1));
+            $this->redirect($this->getReferer());
+        }
+
+
+
+        $href .= '&amp;tid=' . $row['id'] . '&amp;state=' . ($row['published'] ? '' : 1);
+
+        if (!$row['published'])
+        {
+            $icon = 'invisible.gif';
+        }
+
+
+        return '<a href="' . $this->addToUrl($href) . '" title="' . specialchars($title) . '"' . $attributes . '>' . Image::getHtml($icon, $label) . '</a> ';
+    }
+
+    /**
+     * Disable/enable a user group
+     * @param integer
+     * @param boolean
+     */
+    public function toggleVisibility($intId, $blnVisible)
+    {
+        // Check permissions to edit
+        Input::setGet('id', $intId);
+        Input::setGet('act', 'toggle');
+
+
+
+        // Trigger the save_callback
+        if (is_array($GLOBALS['TL_DCA']['tl_page']['fields']['published']['save_callback']))
+        {
+            foreach ($GLOBALS['TL_DCA']['tl_page']['fields']['published']['save_callback'] as $callback)
+            {
+                $this->import($callback[0]);
+                $blnVisible = $this->$callback[0]->$callback[1]($blnVisible, $this);
+            }
+        }
+
+        // Update the database
+        $this->Database->prepare("UPDATE tl_link_data SET published='" . ($blnVisible ? 1 : '') . "' WHERE id=?")
+                ->execute($intId);
+    }
+
     public function listLinks($arrRow)
     {
         $arrRow['url'] = html_entity_decode($arrRow['url']); // Anchor
@@ -227,11 +283,22 @@ class class_link_dat extends Backend
             }
         }
 
+        if ($arrRow['image'])
+        {
+            $objFile = \FilesModel::findById($arrRow['image']);
+
+            if ($objFile !== null)
+            {
+                $preview = $objFile->path;
+                $image = '<img src="' . $this->getImage($preview, 65, 45, 'center_center') . '" alt="' . htmlspecialchars($label) . '" style="display: inline-block;vertical-align: top;*display:inline;zoom:1;padding-right:8px;" />';
+            }
+        }
+
+
         $line = '';
-        $line .= '<div class="cte_type ' . (($arrRow["published"] == 1) ? '' : 'un') . 'published">';
-        $line .= $arrRow['url_text'];
-        $line .= " - ";
-        $line .= '<a href="' . $arrRow['url_protocol'] . $arrRow['url'] . '"' . LINK_NEW_WINDOW . '>' . $arrRow['url'] . '</a>' . $strError;
+        $line .= '<div>';
+        $line .= $image;
+        $line .= '<a href="' . $arrRow['url_protocol'] . $arrRow['url'] . '" title="' . $arrRow['url'] . '"' . LINK_NEW_WINDOW . '>' . ($arrRow['url_text'] != '' ? $arrRow['url_text'] : $arrRow['url']) . '</a>' . $strError;
         $line .= "</div>";
         $line .= "<div>";
         $line .= $arrRow['description'];
