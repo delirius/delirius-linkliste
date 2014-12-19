@@ -92,16 +92,47 @@ class class_linkliste extends Module
             $this->Template->standardfavicon = $objParams->delirius_linkliste_standardfavicon;
         }
 
+        $imgSize = deserialize($this->delirius_linkliste_imagesize);
+        $image_size = '';
+        if ($imgSize[0])
+        {
+            $image_size .= ' width="' . $imgSize[0] . '"';
+            $this->Template->delirius_linkliste_w = 'width:' . $imgSize[0].'px;';
+        }
+        if ($imgSize[1])
+        {
+            $image_size .= ' height="' . $imgSize[1] . '"';
+            $this->Template->delirius_linkliste_h = 'height:' . $imgSize[1].'px;';
+        }
+        $this->Template->delirius_linkliste_imagesize = $image_size;
+
         $arrLinks = array();
 
         $query = ' SELECT a.*, b.title AS categorietitle FROM tl_link_data a, tl_link_category b WHERE a.pid=b.id ' . $strAnd . ' AND b.published = "1" AND a.published = "1" ORDER BY ' . $strOrder;
-
         $objData = $this->Database->execute($query);
+
+        $query_cc = ' SELECT a.pid, COUNT(a.id) as cc FROM tl_link_data a, tl_link_category b WHERE a.pid=b.id ' . $strAnd . ' AND b.published = "1" AND a.published = "1" GROUP BY a.pid';
+        $objCount = Database::getInstance()->prepare($query_cc)->execute();
+        while ($objCount->next())
+        {
+            $arrCount[$objCount->pid] = $objCount->cc;
+        }
+
+        $j = 0;
         while ($objData->next())
         {
+            $j++;
+            $countcat = $arrCount[$objData->pid];
+            $class = ((($j % 2) == 0) ? ' even' : ' odd') . (($j == 1) ? ' first' : '');
+            if ($j == $countcat)
+            {
+                $class .= ' last';
+                $j = 0;
+            }
 
             $arrNew = array
                 (
+                'class' => $class,
                 'categorietitle' => trim($objData->categorietitle),
                 'url_protocol' => trim($objData->url_protocol),
                 'url' => trim($objData->url),
@@ -126,10 +157,9 @@ class class_linkliste extends Module
                     {
                         return '<p class="error">' . $GLOBALS['TL_LANG']['ERR']['version2format'] . '</p>';
                     }
-
                 } else
                 {
-                    $arrNew['image'] = $this->getImage($objFile->path, '16', '16', 'box');
+                    $arrNew['image'] = $this->getImage($objFile->path, $imgSize[0], $imgSize[1], $imgSize[2]);
                 }
             }
 
@@ -137,18 +167,9 @@ class class_linkliste extends Module
 
             $arrLinks[$objData->categorietitle][] = $arrNew;
         }
-       $this->Template->linkliste = $arrLinks;
+        $this->Template->linkliste = $arrLinks;
         $this->Template->favicon = $objParams->delirius_linkliste_favicon;
-
-
-        /* Add JS in HTML head */
-        $GLOBALS['TL_HEAD'][] = "<script type=\"text/javascript\">
-<!--//--><![CDATA[//><!--
-window.addEvent('load', function() {document.id('favicon').getFavicons('');});
-//--><!]]>
-</script>";
     }
 
 }
-
 ?>

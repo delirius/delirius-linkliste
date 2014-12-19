@@ -1,12 +1,13 @@
 /* adjust styling of favicon image */
 .favicon-img {
-height:16px;
 margin-right:6px;
-width:16px;
 float:left;
 }
 
-
+.ext_favicon .favicon-img
+{
+    //border: 1px dotted red;
+}
 
 /* adjust styling of span wrapper if needed */
 .favicon-wrapper {

@@ -31,7 +31,7 @@ if (!defined('TL_ROOT'))
 /**
  * Add palettes to tl_module
  */
-$GLOBALS['TL_DCA']['tl_module']['palettes']['delirius_linkliste'] = '{title_legend},name,type;{option_legend},delirius_linkliste_categories,delirius_linkliste_fesort,delirius_linkliste_template,delirius_linkliste_favicon,delirius_linkliste_standardfavicon;{expert_legend:hide},cssID,space;style';
+$GLOBALS['TL_DCA']['tl_module']['palettes']['delirius_linkliste'] = '{title_legend},name,type;{option_legend},delirius_linkliste_categories,delirius_linkliste_fesort,delirius_linkliste_template,delirius_linkliste_favicon,delirius_linkliste_standardfavicon,delirius_linkliste_imagesize;{expert_legend:hide},cssID,space;style';
 
 
 
@@ -89,6 +89,16 @@ $GLOBALS['TL_DCA']['tl_module']['fields']['delirius_linkliste_standardfavicon'] 
     'inputType' => 'fileTree',
     'eval' => array('files' => true, 'fieldType' => 'radio', 'filesOnly' => true, 'extensions' => 'jpg,jpeg,png,gif,ico'),
     'sql' => "varchar(255) NOT NULL default ''"
+);
+$GLOBALS['TL_DCA']['tl_module']['fields']['delirius_linkliste_imagesize'] = array
+    (
+    'label' => &$GLOBALS['TL_LANG']['tl_module']['delirius_linkliste_imagesize'],
+    'exclude' => true,
+    'inputType' => 'imageSize',
+    'options' => $GLOBALS['TL_CROP'],
+    'reference' => &$GLOBALS['TL_LANG']['MSC'],
+    'eval' => array('rgxp' => 'digit', 'nospace' => true, 'helpwizard' => true),
+    'sql' => "varchar(64) NOT NULL default ''"
 );
 
 class tl_module_linkliste extends Backend

@@ -87,8 +87,6 @@ array_insert($GLOBALS['FE_MOD']['delirius_linkliste'], 0, array
         'delirius_linkliste'	=> 'class_linkliste'
 ));
 
-$GLOBALS['TL_JAVASCRIPT'][] = 'system/modules/delirius_linkliste/html/Mootools-External-Favicon.js';
-$GLOBALS['TL_CSS'][] = 'system/modules/delirius_linkliste/html/favicon.css';
 
 /**
  * -------------------------------------------------------------------------

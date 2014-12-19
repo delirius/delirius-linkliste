@@ -1,77 +1,58 @@
-<?php if ($this->favicon): ?>
+<?php if (count($this->linkliste) > 0): ?>
+
+
+    <?php if ($this->favicon): ?>
+        <?php $favicon_class = 'favicon'; ?>
+    <?php else: // favicon    ?>
+    <?php endif; ?>
 
     <section id="favicon">
 
-        <?php
-        $countcat = count($this->linkliste);
-        $j = 0;
-        foreach ($this->linkliste as $cat):
-            $j++;
-            $classcat = ((($j % 2) == 0) ? ' even' : ' odd') . (($j == 1) ? ' first' : '') . (($j == $countcat) ? ' last' : '');
+        <?php foreach ($this->linkliste as $cat): ?>
 
-            echo '<div class="linkliste_category' . $classcat . '">' . $cat[0]['categorietitle'] . '</div>';
+            <div class="linkliste_category <?php echo $cat[$i]['class']; ?>"><?php echo $cat[0]['categorietitle']; ?></div>
 
-            $cc = count($cat);
-            $clast = $cc - 1;
-            for ($i = 0; $i < $cc; $i++):
+            <?php $cc = count($cat); ?>
+            <?php for ($i = 0; $i < $cc; $i++): ?>
 
-                $class = ((($i % 2) == 0) ? ' odd' : ' even') . (($i == 0) ? ' first' : '') . (($i == $clast) ? ' last' : '');
-                echo '<div class="linkliste_wrapper' . $class . '">';
-                if ($cat[$i]['url'] != '') {
-                    if ($cat[$i]['image'] != '') {
-                        $fav = ' data-linkUrl="' . $cat[$i]['image'] . '"';
-                    } else {
-                        $fav = '';
-                    }
+                <div class="linkliste_wrapper<?php echo $cat[$i]['class']; ?>">
+                    <?php if ($cat[$i]['url'] != ''): ?>
+                        <?php if ($cat[$i]['image'] == ''): ?>
+                            <?php $favicon_class = 'ext_favicon'; ?>
+                            <?php $cat[$i]['image'] = $this->standardfavicon; ?>
+                        <?php else: ?>
+                            <?php $favicon_class = ''; ?>
+                        <?php endif; ?>
 
-                    echo '<div class="linkliste_title">';
-                    echo '<img class="favicon-img" src="' . $this->standardfavicon . '" alt="' . $cat[$i]['url_text'] . '" />';
-                    echo '<a' . $fav . ' href="' . $cat[$i]['url_protocol'] . $cat[$i]['url'] . '"' . LINK_NEW_WINDOW . '>' . $cat[$i]['url_text'] . '</a>';
-                    echo '</div>';
-                }
-                if ($cat[$i]['description'] != '') {
-                    echo '<div style="padding-left:22px;" class="linkliste_text">' . $cat[$i]['description'] . '</div>';
-                }
-                echo '</div>';
-                ?>
 
+                        <div class="linkliste_title">
+                            <a class="<?php echo $favicon_class; ?>" href="<?php echo $cat[$i]['url_protocol'] . $cat[$i]['url']; ?>" <?php echo LINK_NEW_WINDOW; ?> >
+                                <img class="favicon-img" src="<?php echo $cat[$i]['image']; ?>" <?php echo $this->delirius_linkliste_imagesize; ?> alt="<?php echo $cat[$i]['url_text']; ?>" style="<?php echo $this->delirius_linkliste_w . $this->delirius_linkliste_h; ?>"/>
+                            </a>                        
+                            <a href="<?php echo $cat[$i]['url_protocol'] . $cat[$i]['url']; ?>" <?php echo LINK_NEW_WINDOW; ?> >
+                                <?php echo $cat[$i]['url_text']; ?>
+                            </a>
+                        </div>
+                    <?php endif; ?>
+                    <?php if ($cat[$i]['description'] != ''): ?>
+                        <div style="padding-left:22px;" class="linkliste_text"><?php echo $cat[$i]['description']; ?></div>';
+                    <?php endif; ?>
+
+                </div>
             <?php endfor; ?>
         <?php endforeach; ?>
     </section>
 
-
-    <?php else: // favicon ?>
-
-    <?php
-    $countcat = count($this->linkliste);
-    $j = 0;
-    foreach ($this->linkliste as $cat):
-        $j++;
-        $classcat = ((($j % 2) == 0) ? ' even' : ' odd') . (($j == 1) ? ' first' : '') . (($j == $countcat) ? ' last' : '');
-
-        echo '<div class="linkliste_category' . $classcat . '">' . $cat[0]['categorietitle'] . '</div>';
-
-        $cc = count($cat);
-        $clast = $cc - 1;
-        for ($i = 0; $i < $cc; $i++):
-
-            $class = ((($i % 2) == 0) ? ' odd' : ' even') . (($i == 0) ? ' first' : '') . (($i == $clast) ? ' last' : '');
-            echo '<div class="linkliste_wrapper' . $class . '">';
-            if ($cat[$i]['url'] != '') {
-                echo '<div class="linkliste_title">';
-                echo '<a href="' . $cat[$i]['url_protocol'] . $cat[$i]['url'] . '"' . LINK_NEW_WINDOW . '>' . $cat[$i]['url_text'] . '</a>';
-                echo '</div>';
-            }
-            if ($cat[$i]['description'] != '') {
-                echo '<div class="linkliste_text">' . $cat[$i]['description'] . '</div>';
-            }
-            echo '</div>';
-            ?>
-
-        <?php endfor; ?>
-    <?php endforeach; ?>
-
-
-
 <?php endif; ?>
 
+<?php
+
+//$GLOBALS['TL_JAVASCRIPT'][] = 'system/modules/delirius_linkliste/html/Mootools-External-Favicon.js';
+$GLOBALS['TL_JAVASCRIPT'][] = 'system/modules/delirius_linkliste/html/jquery-external-favicons.js';
+$GLOBALS['TL_CSS'][] = 'system/modules/delirius_linkliste/html/favicon.css';
+
+?>
+<?php
+
+//$GLOBALS['TL_CSS'][] = 'system/modules/delirius_linkliste/html/favicon.css';
+?>
