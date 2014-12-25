@@ -32,12 +32,12 @@
 /**
  * Back end modules
  */
-$GLOBALS['TL_LANG']['MOD']['delirius_linkliste'] = array('Linkliste mit Bild', '');
+$GLOBALS['TL_LANG']['MOD']['delirius_linkliste'] = array('Linkliste extended', '');
 
 /**
  * Front end modules
  */
-$GLOBALS['TL_LANG']['FMD']['delirius_linkliste'] = array('Linkliste mit Bild', '');
+$GLOBALS['TL_LANG']['FMD']['delirius_linkliste'] = array('Linkliste extended', '');
 
 
 /**
@@ -47,9 +47,11 @@ $GLOBALS['TL_LANG']['tl_module']['option_legend']     = 'Optionen';
 
 $GLOBALS['TL_LANG']['tl_module']['delirius_linkliste_categories'] = array('Kategorien','Wenn keine Kategorie angewählt ist werden alle Kategorien ausgegeben, auch die neu erstellten');
 $GLOBALS['TL_LANG']['tl_module']['delirius_linkliste_fesort'] = array('Sortierung','');
-$GLOBALS['TL_LANG']['tl_module']['delirius_linkliste_favicon'] = array('Favicon darstellen','Ein Favicon (kurz für favorite icon) ist ein kleines Symbol das unter anderem in der Adresszeile eines Browsers links von der URL angezeigt wird');
+$GLOBALS['TL_LANG']['tl_module']['delirius_linkliste_favicon'] = array('Favicon aktiv','Aktiviert im Template das Javascript um das externe Favicon zu laden zB. xy.com/favicon.ico');
+$GLOBALS['TL_LANG']['tl_module']['delirius_linkliste_showimage'] = array('Bild darstellen','');
 $GLOBALS['TL_LANG']['tl_module']['delirius_linkliste_standardfavicon'] = array('Standard Bild ändern','');
 $GLOBALS['TL_LANG']['tl_module']['delirius_linkliste_template'] = array('Template','Template wählen. (Templatename beginnt mit linkliste_)');
+$GLOBALS['TL_LANG']['tl_module']['delirius_linkliste_imagesize'] = array('Bildgrösse','');
 
 $GLOBALS['TL_LANG']['tl_module']['fesort_option']['random'] = 'Reihenfolge zufällig';
 $GLOBALS['TL_LANG']['tl_module']['fesort_option']['order'] = 'Reihenfolge manuell (wie Backend)';

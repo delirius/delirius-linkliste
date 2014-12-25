@@ -54,14 +54,15 @@ $GLOBALS['TL_DCA']['tl_link_category'] = array
         (
         'sorting' => array
             (
-            'mode' => 5,
-            'fields' => array('sorting'),
+            'mode' => 1,
+            'fields' => array('title'),
             'flag' => 1,
         ),
         'label' => array
             (
             'fields' => array('title'),
-            'format' => '<strong>%s</strong>'
+            'format' => '<strong>%s</strong>',
+            'label_callback' => array('class_link_cat', 'getRowLabel')
         ),
         'global_operations' => array
             (
@@ -75,6 +76,13 @@ $GLOBALS['TL_DCA']['tl_link_category'] = array
         ),
         'operations' => array
             (
+            'checkLinksCategorie' => array
+                (
+                'label' => &$GLOBALS['TL_LANG']['MSC']['checklinkscategorie'],
+                'href' => 'lte=linktest',
+                'icon' => 'show.gif',
+                'button_callback' => array('class_link_cat', 'checkLinkButton')
+            ),
             'edit' => array
                 (
                 'label' => &$GLOBALS['TL_LANG']['tl_link_category']['edit'],
@@ -100,20 +108,23 @@ $GLOBALS['TL_DCA']['tl_link_category'] = array
                 'href' => 'act=delete',
                 'icon' => 'delete.gif',
                 'attributes' => 'onclick="if (!confirm(\'' . $GLOBALS['TL_LANG']['MSC']['deleteConfirm'] . '\')) return false; Backend.getScrollOffset();"'
-            ),
-            'show' => array
-                (
-                'label' => &$GLOBALS['TL_LANG']['tl_link_category']['show'],
-                'href' => 'act=show',
-                'icon' => 'show.gif'
             )
+        /*
+          'show' => array
+          (
+          'label' => &$GLOBALS['TL_LANG']['tl_link_category']['show'],
+          'href' => 'act=show',
+          'icon' => 'show.gif'
+          ),
+         * 
+         */
         )
     ),
 // Palettes
     'palettes' => array
         (
         '__selector__' => array(''),
-        'default' => '{category_legend},published,title'
+        'default' => '{category_legend},published,title,description,image'
     ),
 // Subpalettes
     'subpalettes' => array
@@ -155,7 +166,87 @@ $GLOBALS['TL_DCA']['tl_link_category'] = array
             'inputType' => 'text',
             'eval' => array('mandatory' => true, 'maxlength' => 255),
             'sql' => "varchar(255) NOT NULL default ''"
+        ),
+        'description' => array
+            (
+            'label' => &$GLOBALS['TL_LANG']['tl_link_category']['description'],
+            'exclude' => true,
+            'search' => true,
+            'inputType' => 'textarea',
+            'eval' => array('style' => 'height:48px', 'tl_class' => 'clr', 'rte' => 'tinyMCE'),
+            'sql' => "text NULL"
+        ),
+        'image' => array
+            (
+            'label' => &$GLOBALS['TL_LANG']['tl_link_category']['image'],
+            'exclude' => true,
+            'exclude' => true,
+            'inputType' => 'fileTree',
+            'eval' => array('fieldType' => 'radio', 'files' => true, 'filesOnly' => true, 'extensions' => $GLOBALS['TL_CONFIG']['validImageTypes']),
+            'sql' => "blob NULL"
         )
     )
 );
+
+class class_link_cat extends Backend
+{
+
+    public function getRowLabel($row)
+    {
+        if ($row['image'])
+        {
+            $objFile = \FilesModel::findById($row['image']);
+
+            if ($objFile !== null)
+            {
+                $preview = $objFile->path;
+                $image = '<img src="' . $this->getImage($preview, 65, 45, 'center_center') . '" alt="' . htmlspecialchars($label) . '" style="display: inline-block;vertical-align: top;*display:inline;zoom:1;padding-right:8px;" />';
+            }
+        }
+
+        if ($row['title'])
+        {
+            $text = '<span class="name">' . $row['title'] . '</span>';
+        }
+
+        $objData = \Database::getInstance()->prepare('SELECT COUNT(id) as cc FROM tl_link_data WHERE pid = ?')->execute($row['id']);
+        if ($objData->cc > 0)
+        {
+            $text .= ' (' . $objData->cc . ')';
+        }
+
+
+        return $image . $text;
+
+
+        // return $this->replaceInsertTags('{{image::/' . $objFile->path . '?width=55&height=65}}');
+    }
+
+    public function checkLinkButton($row, $href, $label, $title, $icon, $attributes)
+    {
+        $return = '';
+
+        $objData = \Database::getInstance()->prepare('SELECT SUM(be_warning) as be_warning, SUM(be_error) as be_error FROM tl_link_data WHERE pid = ?')->execute($row['id']);
+
+        if ($objData->be_warning > 0)
+        {
+            $warning = ' <span class="linkliste_orange" title="Warning">&nbsp;' . $objData->be_warning . '&nbsp;</span>';
+        }
+        if ($objData->be_error > 0)
+        {
+            $error = ' <span class="linkliste_red" title="Error">&nbsp;' . $objData->be_error . '&nbsp;</span>';
+        }
+
+        $image = 'system/modules/delirius_linkliste/html/check.png';
+
+        $return .= '<a class="be_button" href="' . $this->addToUrl($href . '&amp;id=' . $row['id'] . '&table=tl_link_data') . '" title="' . $GLOBALS['TL_LANG']['MSC']['checklinkscategorie'] . '"' . $attributes . '>' .  $warning . $error . '&nbsp;'.Image::getHtml($image) . '</a>&nbsp;&nbsp;';
+
+        return $return;
+
+        // return $this->replaceInsertTags('{{image::/' . $objFile->path . '?width=55&height=65}}');
+    }
+
+}
+
+// class
 ?>

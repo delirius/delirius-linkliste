@@ -53,7 +53,6 @@ class class_linkliste extends Module
     protected function compile()
     {
 
-
         $objParams = $this->Database->prepare("SELECT * FROM tl_module WHERE id=?")
                 ->limit(1)
                 ->execute($this->id);
@@ -63,7 +62,7 @@ class class_linkliste extends Module
         if ($objParams->delirius_linkliste_categories != '')
         {
             $arrCat = deserialize($objParams->delirius_linkliste_categories);
-            $strAnd = ' AND b.id IN (' . implode(',', $arrCat) . ') ';
+            $strAnd = implode(',', $arrCat);
         }
 
         // random, order, title
@@ -84,12 +83,42 @@ class class_linkliste extends Module
         }
         $this->Template = new FrontendTemplate($objParams->delirius_linkliste_template);
 
+        /* imagesize */
+        $imgSize = deserialize($this->delirius_linkliste_imagesize);
+        $image_size = '';
+        if ($imgSize[0])
+        {
+            $image_size .= ' width="' . $imgSize[0] . '"';
+            $this->Template->delirius_linkliste_w = 'width:' . $imgSize[0] . 'px;';
+        }
+        if ($imgSize[1])
+        {
+            $image_size .= ' height="' . $imgSize[1] . '"';
+            $this->Template->delirius_linkliste_h = 'height:' . $imgSize[1] . 'px;';
+        }
+        $this->Template->delirius_linkliste_imagesize = $image_size;
+
+        /* standard image */
         if ($objParams->delirius_linkliste_standardfavicon == '')
         {
             $this->Template->standardfavicon = 'system/modules/delirius_linkliste/html/icon.png';
         } else
         {
-            $this->Template->standardfavicon = $objParams->delirius_linkliste_standardfavicon;
+
+            $objFile = \FilesModel::findById($objParams->delirius_linkliste_standardfavicon);
+
+            if ($objFile === null)
+            {
+                $this->Template->standardfavicon = 'system/modules/delirius_linkliste/html/icon.png';
+
+                if (!\Validator::isUuid($objData->image))
+                {
+                    return '<p class="error">' . $GLOBALS['TL_LANG']['ERR']['version2format'] . '</p>';
+                }
+            } else
+            {
+                $this->Template->standardfavicon = $this->getImage($objFile->path, $imgSize[0], $imgSize[1], $imgSize[2]);
+            }
         }
 
         $imgSize = deserialize($this->delirius_linkliste_imagesize);
@@ -97,21 +126,38 @@ class class_linkliste extends Module
         if ($imgSize[0])
         {
             $image_size .= ' width="' . $imgSize[0] . '"';
-            $this->Template->delirius_linkliste_w = 'width:' . $imgSize[0].'px;';
+            $this->Template->delirius_linkliste_w = 'width:' . $imgSize[0] . 'px;';
         }
         if ($imgSize[1])
         {
             $image_size .= ' height="' . $imgSize[1] . '"';
-            $this->Template->delirius_linkliste_h = 'height:' . $imgSize[1].'px;';
+            $this->Template->delirius_linkliste_h = 'height:' . $imgSize[1] . 'px;';
         }
         $this->Template->delirius_linkliste_imagesize = $image_size;
 
+        // Check for javascript framework
+        if (TL_MODE == 'FE')
+        {
+
+            /** @type PageModel $objPage */
+            global $objPage;
+            $this->Template->jquery = false;
+            $this->Template->mootools = false;
+            if ($objPage->getRelated('layout')->addJQuery)
+            {
+                $this->Template->jquery = true;
+            }
+            if ($objPage->getRelated('layout')->addMooTools)
+            {
+                $this->Template->mootools = true;
+            }
+        }
         $arrLinks = array();
 
-        $query = ' SELECT a.*, b.title AS categorietitle FROM tl_link_data a, tl_link_category b WHERE a.pid=b.id ' . $strAnd . ' AND b.published = "1" AND a.published = "1" ORDER BY ' . $strOrder;
+        $query = ' SELECT a.*, b.title AS categorietitle, b.description AS categoriedescription, b.image AS categorieimage FROM tl_link_data a, tl_link_category b WHERE a.pid=b.id AND b.id IN (' . $strAnd . ') AND b.published = "1" AND a.published = "1" ORDER BY FIELD(b.id,' . $strAnd . '),' . $strOrder;
         $objData = $this->Database->execute($query);
 
-        $query_cc = ' SELECT a.pid, COUNT(a.id) as cc FROM tl_link_data a, tl_link_category b WHERE a.pid=b.id ' . $strAnd . ' AND b.published = "1" AND a.published = "1" GROUP BY a.pid';
+        $query_cc = ' SELECT a.pid, COUNT(a.id) as cc FROM tl_link_data a, tl_link_category b WHERE a.pid=b.id AND b.id IN (' . $strAnd . ') AND b.published = "1" AND a.published = "1" GROUP BY a.pid';
         $objCount = Database::getInstance()->prepare($query_cc)->execute();
         while ($objCount->next())
         {
@@ -123,7 +169,7 @@ class class_linkliste extends Module
         {
             $j++;
             $countcat = $arrCount[$objData->pid];
-            $class = ((($j % 2) == 0) ? ' even' : ' odd') . (($j == 1) ? ' first' : '');
+            $class = ((($j % 2) == 0) ? ' odd' : ' even') . (($j == 1) ? ' first' : '');
             if ($j == $countcat)
             {
                 $class .= ' last';
@@ -134,9 +180,14 @@ class class_linkliste extends Module
                 (
                 'class' => $class,
                 'categorietitle' => trim($objData->categorietitle),
+                'categoriedescription' => trim($objData->categoriedescription),
+                'categorieimage' => trim($objData->categorieimage),
+                'categoriecount' => $countcat,
                 'url_protocol' => trim($objData->url_protocol),
                 'url' => trim($objData->url),
+                'target' => trim($objData->target),
                 'url_text' => trim($objData->url_text),
+                'url_title' => trim($objData->url_title),
                 'description' => trim($objData->description),
             );
             if (strlen($objData->url_text) == 0)
@@ -162,14 +213,20 @@ class class_linkliste extends Module
                     $arrNew['image'] = $this->getImage($objFile->path, $imgSize[0], $imgSize[1], $imgSize[2]);
                 }
             }
-
-
+            $arrNew['categorieimage'] = '';
+            if (strlen($objData->categorieimage) != 0)
+            {
+                $objFile = \FilesModel::findById($objData->categorieimage);
+                $arrNew['categorieimage'] = $objFile->path;
+            }
 
             $arrLinks[$objData->categorietitle][] = $arrNew;
         }
         $this->Template->linkliste = $arrLinks;
         $this->Template->favicon = $objParams->delirius_linkliste_favicon;
+        $this->Template->showimage = $objParams->delirius_linkliste_showimage;
     }
 
 }
+
 ?>

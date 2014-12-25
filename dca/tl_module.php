@@ -31,7 +31,7 @@ if (!defined('TL_ROOT'))
 /**
  * Add palettes to tl_module
  */
-$GLOBALS['TL_DCA']['tl_module']['palettes']['delirius_linkliste'] = '{title_legend},name,type;{option_legend},delirius_linkliste_categories,delirius_linkliste_fesort,delirius_linkliste_template,delirius_linkliste_favicon,delirius_linkliste_standardfavicon,delirius_linkliste_imagesize;{expert_legend:hide},cssID,space;style';
+$GLOBALS['TL_DCA']['tl_module']['palettes']['delirius_linkliste'] = '{title_legend},name,type;{option_legend},delirius_linkliste_categories,delirius_linkliste_fesort,delirius_linkliste_template,delirius_linkliste_showimage,delirius_linkliste_standardfavicon,delirius_linkliste_imagesize,delirius_linkliste_favicon;{expert_legend:hide},cssID,space;style';
 
 
 
@@ -43,10 +43,10 @@ $GLOBALS['TL_DCA']['tl_module']['fields']['delirius_linkliste_categories'] = arr
     (
     'label' => &$GLOBALS['TL_LANG']['tl_module']['delirius_linkliste_categories'],
     'exclude' => true,
-    'inputType' => 'checkbox',
+    'inputType' => 'checkboxWizard',
     'foreignKey' => 'tl_link_category.title',
-    'eval' => array('multiple' => true, 'mandatory' => false),
-    'sql' => "text NULL"
+    'eval' => array('multiple' => true, 'mandatory' => false,'tl_class' => 'm12'),
+    'sql' => "varchar(255) NOT NULL default ''"
 );
 
 $GLOBALS['TL_DCA']['tl_module']['fields']['delirius_linkliste_fesort'] = array
@@ -82,13 +82,23 @@ $GLOBALS['TL_DCA']['tl_module']['fields']['delirius_linkliste_favicon'] = array
     'sql' => "char(1) NOT NULL default ''"
 );
 
+$GLOBALS['TL_DCA']['tl_module']['fields']['delirius_linkliste_showimage'] = array
+    (
+    'label' => &$GLOBALS['TL_LANG']['tl_module']['delirius_linkliste_showimage'],
+    'exclude' => true,
+    'inputType' => 'checkbox',
+    'default' => '1',
+    'eval' => array('mandatory' => false),
+    'sql' => "char(1) NOT NULL default ''"
+);
+
 $GLOBALS['TL_DCA']['tl_module']['fields']['delirius_linkliste_standardfavicon'] = array
     (
     'label' => &$GLOBALS['TL_LANG']['tl_module']['delirius_linkliste_standardfavicon'],
     'exclude' => true,
     'inputType' => 'fileTree',
     'eval' => array('files' => true, 'fieldType' => 'radio', 'filesOnly' => true, 'extensions' => 'jpg,jpeg,png,gif,ico'),
-    'sql' => "varchar(255) NOT NULL default ''"
+    'sql' => "blob NULL"
 );
 $GLOBALS['TL_DCA']['tl_module']['fields']['delirius_linkliste_imagesize'] = array
     (

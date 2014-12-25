@@ -1,20 +1,41 @@
 /* adjust styling of favicon image */
-.favicon-img {
-margin-right:6px;
-float:left;
+.linkliste_item .favicon-img {
+    margin-right:6px;
+    display: inline-block;
+}
+.ie7 .linkliste_item .favicon-img, .ie6 .linkliste_item .favicon-img {
+    display: inline;
+    zoom: 1;
 }
 
-.ext_favicon .favicon-img
+/* adjust styling */
+#linklist_extended .linkliste_wrapper
 {
-    //border: 1px dotted red;
+    margin:24px 0 0 0;
 }
-
-/* adjust styling of span wrapper if needed */
-.favicon-wrapper {
+#linklist_extended .linkliste_categorie
+{
+    margin:0 0 6px 0;
 }
-
-
-.linkliste_category { margin: 20px 0 8px 0; font-size: 14px; font-weight: 700;}
-.linkliste_wrapper { margin: 0 0 12px 0;}
-.linkliste_title { }
-.linkliste_text { margin: 0 20px 0 0; }
+#linklist_extended .linkliste_item
+{
+    margin:0 0 2px 0;
+}
+#linklist_extended h3 {
+    margin:0;
+}
+#linklist_extended a {
+    /* font-size: 16px; */
+}
+#linklist_extended a.image_link {
+    text-decoration: none;
+}
+#linklist_extended img {
+    vertical-align: middle;
+}
+#linklist_extended .linkliste_text {
+    /* margin-left:24px; */
+}
+#linklist_extended .linkliste_categorietext p, #linklist_extended .linkliste_text p {
+    margin:0;
+}

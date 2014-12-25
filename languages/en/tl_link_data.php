@@ -35,7 +35,9 @@
 $GLOBALS['TL_LANG']['tl_link_data']['published'] = array('Published', '');
 $GLOBALS['TL_LANG']['tl_link_data']['url_protocol'] = array('Protocol (http://)', '');
 $GLOBALS['TL_LANG']['tl_link_data']['url'] = array('Link', '');
+$GLOBALS['TL_LANG']['tl_link_data']['target'] = array('Open in new window', '');
 $GLOBALS['TL_LANG']['tl_link_data']['url_text'] = array('Link text', '');
+$GLOBALS['TL_LANG']['tl_link_data']['url_title'] = array('Link title', '');
 $GLOBALS['TL_LANG']['tl_link_data']['description'] = array('Description', '');
 $GLOBALS['TL_LANG']['tl_link_data']['image'] = array('Local image', '');
 

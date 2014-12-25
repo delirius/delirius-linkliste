@@ -1,5 +1,5 @@
 
-$(window).load(function () {  
+$(window).load(function () {
     var externalLinks = $('a[class^="ext_favicon"]');
     $.each(externalLinks, function (key, val) {
         var aURL = "" + val;
@@ -10,16 +10,13 @@ $(window).load(function () { 
 
         extImg.src = faviconURL;
 
-        if (extImg.complete) {
+
+        extImg.onload = function () {
             faviconIMG.attr('src', faviconURL);
-        }
-        else {
-            extImg.onload = function () {
-                faviconIMG.attr('src', faviconURL);
-            };
-        }
+        };
+
 
 
     });
 
-});  
+});

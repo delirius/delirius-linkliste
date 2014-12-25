@@ -1,0 +1,33 @@
+.header_theme_checklinks
+{
+    background-image:url('/system/modules/delirius_linkliste/html/check.png');
+    background-repeat:no-repeat;
+}
+
+.be_button {
+    margin-right: 10px;
+    color:#fff;
+    text-align: right;
+    display:inline-block;
+    cursor:pointer;
+}
+.linkliste_red, .linkliste_orange, .linkliste_gray {
+    -moz-border-radius:12px;
+    -webkit-border-radius:12px;
+    border-radius:12px;
+    padding:1px 2px;
+    font-size: 8px;
+}
+.linkliste_red {
+    background-color:#d90000;
+    color:#fff;
+}
+
+.linkliste_orange {
+    background-color:#ff9900;
+    color:#fff;
+}
+.linkliste_gray {
+    background-color:#333;
+    color:#fff;
+}

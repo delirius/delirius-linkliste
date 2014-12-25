@@ -60,7 +60,9 @@
 $GLOBALS['BE_MOD']['content']['delirius_linkliste'] = array
         (
         'tables' => array('tl_link_category','tl_link_data'),
-        'icon'   => 'system/modules/delirius_linkliste/html/icon.png'
+        'icon'   => 'system/modules/delirius_linkliste/html/icon.png',
+        'stylesheet' => 'system/modules/delirius_linkliste/html/be.css',
+
 );
 
 

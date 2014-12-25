@@ -22,7 +22,9 @@ class linklisteRunonce extends Controller
 
     public function run()
     {
-        if (version_compare(VERSION, '3.0', '>=') && $this->Database->tableExists('tl_files') && $this->Database->fieldExists('image', 'tl_link_data') )
+
+
+        if (version_compare(VERSION, '3.0', '>=') && $this->Database->tableExists('tl_files') && $this->Database->fieldExists('image', 'tl_link_data'))
         {
             $objData = $this->Database->prepare("SELECT id,image FROM tl_link_data WHERE 1")->execute();
 
@@ -33,12 +35,13 @@ class linklisteRunonce extends Controller
                     $objImage = $this->Database->prepare("SELECT id FROM tl_files WHERE path = ?")->execute($objData->image);
                     if ($objImage->id > 0)
                     {
-                        $this->log("UPDATE tl_link_data SET image = ".$objImage->id." WHERE id = ".$objData->id." ",'SQL Update 2.x to 3.x',TL_GENERAL);
+                        $this->log("UPDATE tl_link_data SET image = " . $objImage->id . " WHERE id = " . $objData->id . " ", 'SQL Update 2.x to 3.x', TL_GENERAL);
                         $this->Database->prepare("UPDATE tl_link_data SET image = ? WHERE id = ? ")->execute($objImage->id, $objData->id);
                     }
                 }
             }
         }
+
         if (version_compare(VERSION, '3.2', '>=') && $this->Database->tableExists('tl_link_data'))
         {
             $arrFields = $this->Database->listFields('tl_link_data');
@@ -49,9 +52,11 @@ class linklisteRunonce extends Controller
                 {
                     Database\Updater::convertSingleField('tl_link_data', 'image');
                 }
-               
             }
         }
+        
+        /* remove protocol */
+        $this->Database->prepare("UPDATE `tl_link_data` SET `url` = CONCAT(`url_protocol`, `url`)")->execute();
     }
 
 }
@@ -59,4 +64,3 @@ class linklisteRunonce extends Controller
 $objlinklisteRunonce = new linklisteRunonce();
 $objlinklisteRunonce->run();
 ?>
-

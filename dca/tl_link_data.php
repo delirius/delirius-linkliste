@@ -78,6 +78,17 @@ $GLOBALS['TL_DCA']['tl_link_data'] = array
         ),
         'operations' => array
             (
+            /*
+            'checkLinksCategorie' => array
+                (
+                'label' => &$GLOBALS['TL_LANG']['MSC']['checklinkscategorie'],
+                'href' => 'lte=linktest',
+                'icon' => 'show.gif',
+                'button_callback' => array('class_link_dat', 'checkLinkButton')
+           
+            ),
+             * 
+             */
             'edit' => array
                 (
                 'label' => &$GLOBALS['TL_LANG']['tl_link_data']['edit'],
@@ -122,7 +133,7 @@ $GLOBALS['TL_DCA']['tl_link_data'] = array
     'palettes' => array
         (
         '__selector__' => array(''),
-        'default' => '{dataset_legend},published,url,url_text,description,image,url_protocol'
+        'default' => '{dataset_legend},published,url,target,url_text,url_title,description,image;'
     ),
 // Subpalettes
     'subpalettes' => array
@@ -163,14 +174,40 @@ $GLOBALS['TL_DCA']['tl_link_data'] = array
             'exclude' => true,
             'search' => true,
             'inputType' => 'text',
-            'default' => 'www.',
-            'save_callback' => array(array('class_link_dat', 'removeProtocol')),
-            'eval' => array('mandatory' => true, 'maxlength' => 255, 'rgxp' => 'url', 'tl_class' => 'w50'),
+            'default' => 'http://www.',
+            'eval' => array('mandatory' => false, 'rgxp' => 'url', 'decodeEntities' => true, 'maxlength' => 255, 'fieldType' => 'radio', 'tl_class' => 'w50 wizard'),
+            'wizard' => array
+                (
+                array('class_link_dat', 'pagePicker')
+            ),
+            'save_callback' => array
+                (
+                array('class_link_dat', 'checkLinkSave')
+            ),
             'sql' => "varchar(255) NOT NULL default ''"
+        ),
+        'target' => array
+            (
+            'label' => &$GLOBALS['TL_LANG']['tl_link_data']['target'],
+            'exclude' => true,
+            'inputType' => 'checkbox',
+            'default' => '1',
+            'eval' => array('mandatory' => false, 'maxlength' => 255, 'tl_class' => 'w50 m12'),
+            'sql' => "char(1) NOT NULL default ''"
         ),
         'url_text' => array
             (
             'label' => &$GLOBALS['TL_LANG']['tl_link_data']['url_text'],
+            'exclude' => true,
+            'sorting' => true,
+            'search' => true,
+            'inputType' => 'text',
+            'eval' => array('mandatory' => false, 'maxlength' => 255, 'tl_class' => 'clr w50'),
+            'sql' => "varchar(255) NOT NULL default ''"
+        ),
+        'url_title' => array
+            (
+            'label' => &$GLOBALS['TL_LANG']['tl_link_data']['url_title'],
             'exclude' => true,
             'sorting' => true,
             'search' => true,
@@ -184,7 +221,7 @@ $GLOBALS['TL_DCA']['tl_link_data'] = array
             'exclude' => true,
             'inputType' => 'text',
             'default' => 'http://',
-            'eval' => array('mandatory' => true, 'maxlength' => 255),
+            'eval' => array('mandatory' => false, 'maxlength' => 255),
             'sql' => "varchar(128) NOT NULL default ''"
         ),
         'description' => array
@@ -204,7 +241,25 @@ $GLOBALS['TL_DCA']['tl_link_data'] = array
             'inputType' => 'fileTree',
             'eval' => array('fieldType' => 'radio', 'files' => true, 'filesOnly' => true, 'extensions' => $GLOBALS['TL_CONFIG']['validImageTypes']),
             'sql' => "blob NULL"
-        )
+        ),
+        'be_error' => array
+            (
+            'sql' => "int(10) unsigned NOT NULL default '0'"
+        ),
+        'be_warning' => array
+            (
+            'sql' => "int(10) unsigned NOT NULL default '0'"
+        ),
+        'be_text' => array
+            (
+            /*
+              'label' => &$GLOBALS['TL_LANG']['tl_link_data']['be_text'],
+              'inputType' => 'text',
+              'eval' => array('tl_class' => 'long', 'disabled' => true),
+             * 
+             */
+            'sql' => "varchar(255) NOT NULL default ''"
+        ),
     )
 );
 
@@ -260,28 +315,69 @@ class class_link_dat extends Backend
                 ->execute($intId);
     }
 
-    public function listLinks($arrRow)
+    public function checkLinkSave($varValue, DataContainer $dc)
     {
-        $arrRow['url'] = html_entity_decode($arrRow['url']); // Anchor
+        $varValue = html_entity_decode($varValue); // Anchor
+
+        $this->checkLink($varValue, $dc->id);
+        return $varValue;
+    }
+
+    public function checkLink($linkliste_url, $linkliste_id)
+    {
 
         $objRequest = new Request();
-        $objRequest->send($arrRow['url_protocol'] . $arrRow['url']);
+        $objRequest->send($linkliste_url);
 
-        $strError = '';
+        if (false):
+            echo '<pre>';
+            print_r($objRequest);
+            echo '</pre>';
+        endif;
 
-        if ($objRequest->hasError())
+        $this->Database->prepare("UPDATE tl_link_data SET be_error = 0, be_warning = 0, be_text = '' WHERE id = ?")->execute($linkliste_id);
+        $error = '';
+
+        if ($objRequest->code == 0)
         {
-            if ($objRequest->__get('code') == 0)
+            $this->Database->prepare("UPDATE tl_link_data SET be_error = 1 WHERE id=?")->execute($linkliste_id);
+            if (strstr($objRequest->error, 'Name or service not known'))
             {
-                $strError = ' <span style="color:red">invalid host</span>';
-            } elseif ($objRequest->__get('code') >= 400)
+                $error = 'Name or service not known';
+            } else
             {
-                $strError = ' <span style="color:red">not found (' . $objRequest->__get('error') . ')</span>';
-            } elseif ($objRequest->__get('code') >= 300)
+                $error = $objRequest->error;
+            }
+        } elseif ($objRequest->code >= 400)
+        {
+            $this->Database->prepare("UPDATE tl_link_data SET be_error = 1 WHERE id=?")->execute($linkliste_id);
+            $error = $objRequest->error;
+        } elseif ($objRequest->code >= 300)
+        {
+            $this->Database->prepare("UPDATE tl_link_data SET be_warning = 1 WHERE id=?")->execute($linkliste_id);
+            if ($objRequest->code == 301)
             {
-                $strError = ' <span style="color:blue">redirect (' . $objRequest->__get('error') . ')</span>';
+                $error = 'Moved Permanently';
+            } else
+            {
+                $error = $objRequest->error;
             }
         }
+        if ($error != '' || $objRequest->code > 0)
+        {
+            $this->Database->prepare("UPDATE tl_link_data SET be_text = ? WHERE id=?")->execute($objRequest->code . ' ' . $error, $linkliste_id);
+            //$objRequest->response
+        }
+    }
+
+    public function listLinks($arrRow)
+    {
+        if (\Input::get('lte') == 'linktest')
+        {
+
+            $this->checkLink($arrRow['url'], $arrRow['id']);
+        }
+
 
         if ($arrRow['image'])
         {
@@ -295,10 +391,23 @@ class class_link_dat extends Backend
         }
 
 
+        $query = ' SELECT * FROM tl_link_data WHERE id = ? ';
+        $objData = $this->Database->prepare($query)->execute($arrRow['id']);
+
+        if ($objData->be_warning > 0)
+        {
+            $warning = ' <span class="linkliste_orange" title="Warning">&nbsp;' . $objData->be_text . '&nbsp;</span>';
+        }
+        if ($objData->be_error > 0)
+        {
+            $error = ' <span class="linkliste_red" title="Error">&nbsp;' . $objData->be_text . '&nbsp;</span>';
+        }
+
+
         $line = '';
         $line .= '<div>';
         $line .= $image;
-        $line .= '<a href="' . $arrRow['url_protocol'] . $arrRow['url'] . '" title="' . $arrRow['url'] . '"' . LINK_NEW_WINDOW . '>' . ($arrRow['url_text'] != '' ? $arrRow['url_text'] : $arrRow['url']) . '</a>' . $strError;
+        $line .= '<a href="' . $arrRow['url'] . '" title="' . $arrRow['url'] . '"' . LINK_NEW_WINDOW . '>' . ($arrRow['url_text'] != '' ? $arrRow['url_text'] : $arrRow['url']) . '</a>' . $warning . $error;
         $line .= "</div>";
         $line .= "<div>";
         $line .= $arrRow['description'];
@@ -309,12 +418,36 @@ class class_link_dat extends Backend
 
         return($line);
     }
-
-    public function removeProtocol($var, $dc)
+/*
+    public function checkLinkButton($row, $href, $label, $title, $icon, $attributes)
     {
-        $var = preg_replace('/^http:\/\/|^https:\/\//', '', $var);
 
-        return($var);
+        $return = '';
+
+        $objData = \Database::getInstance()->prepare('SELECT be_warning, be_error, be_text FROM tl_link_data WHERE id = ?')->execute($row['id']);
+
+        if ($objData->be_warning > 0)
+        {
+            $warning = ' <span class="linkliste_orange" title="Warning">&nbsp;' . $objData->be_text . '&nbsp;</span>';
+        }
+        if ($objData->be_error > 0)
+        {
+            $error = ' <span class="linkliste_red" title="Error">&nbsp;' . $objData->be_text . '&nbsp;</span>';
+        }
+        
+        $image = 'system/modules/delirius_linkliste/html/check.png';
+        $arrUnset[] = 'lte';
+        $arrUnset[] = 'id';
+        $return .= '<a class="be_button" href="' . $this->addToUrl($href . '&amp;lid=' . $row['id'] . '', true, $arrUnset) . '" title="' . $GLOBALS['TL_LANG']['MSC']['checklink'] . '"' . $attributes . '>' . $warning . $error . '&nbsp;' . Image::getHtml($image) . '</a>&nbsp;&nbsp;';
+
+        return $return;
+
+    }
+*/
+
+    public function pagePicker(DataContainer $dc)
+    {
+        return ' <a href="contao/page.php?do=' . Input::get('do') . '&amp;table=' . $dc->table . '&amp;field=' . $dc->field . '&amp;value=' . str_replace(array('{{link_url::', '}}'), '', $dc->value) . '" title="' . specialchars($GLOBALS['TL_LANG']['MSC']['pagepicker']) . '" onclick="Backend.getScrollOffset();Backend.openModalSelector({\'width\':765,\'title\':\'' . specialchars(str_replace("'", "\\'", $GLOBALS['TL_LANG']['MOD']['page'][0])) . '\',\'url\':this.href,\'id\':\'' . $dc->field . '\',\'tag\':\'ctrl_' . $dc->field . ((Input::get('act') == 'editAll') ? '_' . $dc->id : '') . '\',\'self\':this});return false">' . Image::getHtml('pickpage.gif', $GLOBALS['TL_LANG']['MSC']['pagepicker'], 'style="vertical-align:top;cursor:pointer"') . '</a>';
     }
 
 }

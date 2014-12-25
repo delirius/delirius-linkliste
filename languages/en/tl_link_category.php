@@ -34,7 +34,8 @@
  */
 $GLOBALS['TL_LANG']['tl_link_category']['title'] = array('Title', '');
 $GLOBALS['TL_LANG']['tl_link_category']['published'] = array('Published', '');
-
+$GLOBALS['TL_LANG']['tl_link_category']['description'] = array('Description', '');
+$GLOBALS['TL_LANG']['tl_link_category']['image'] = array('Image', '');
 
 
 /**
