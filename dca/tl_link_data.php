@@ -1,6 +1,5 @@
 <?php
 
-
 /**
  * Contao Open Source CMS
  * Copyright (C) 2005-2010 Leo Feyer
@@ -306,7 +305,7 @@ class class_link_dat extends Backend
 
     public function checkLink($linkliste_id, $linkliste_url = '')
     {
-        
+
         if ($linkliste_url == '')
         {
             $objData = $this->Database->prepare("SELECT url FROM tl_link_data WHERE id = ?")->execute($linkliste_id);
@@ -360,16 +359,27 @@ class class_link_dat extends Backend
                 $error = $objRequest->error;
             }
         }
+
         if ($error != '' || $objRequest->code > 0)
         {
             $this->Database->prepare("UPDATE tl_link_data SET be_text = ? WHERE id=?")->execute($objRequest->code . ' ' . $error, $linkliste_id);
             //$objRequest->response
         }
+
+        /* duplicates */
+        $objData = $this->Database->prepare("SELECT id,be_text FROM tl_link_data WHERE url LIKE ?")->execute('%%' . $linkliste_url . '%%');
+        if ($objData->numRows > 1)
+        {
+            while ($objData->next())
+            {
+                $this->Database->prepare("UPDATE tl_link_data SET be_warning = 1 , be_text = ? WHERE id=?")->execute('Duplicate entrys ', $objData->id);
+            }
+        }
     }
 
     public function listLinks($arrRow)
     {
-        if (\Input::get('key') == 'checklink' && \Input::get('id') != '' )
+        if (\Input::get('key') == 'checklink' && \Input::get('id') != '')
         {
 
             $objData = $this->Database->prepare("SELECT url,id FROM tl_link_data WHERE pid = ?")->execute(\Input::get('id'));
