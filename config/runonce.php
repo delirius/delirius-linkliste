@@ -57,6 +57,17 @@ class linklisteRunonce extends Controller
         
         /* remove protocol */
         $this->Database->prepare("UPDATE `tl_link_data` SET `url` = CONCAT(`url_protocol`, `url`)")->execute();
+        
+        
+         if (version_compare(VERSION, '3.2', '>=') )
+        {
+            $strFile = 'system/modules/delirius_linkliste/config/database.sql';
+            if (\Files::getInstance()->is_writeable($strFile))
+            {
+                \Files::getInstance()->delete($strFile);
+            }
+        }
+        
     }
 
 }
