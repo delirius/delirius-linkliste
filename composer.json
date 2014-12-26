@@ -1,0 +1,26 @@
+{
+    "name": "delirius/delirius_linkliste",
+    "description": "Linklist extended",
+    "keywords": ["contao", "links", "linklist", "linkliste", "linksammlung"],
+    "type": "contao-module",
+    "homepage": "http://www.delirius.ch",
+    "license": "LGPL-3.0+",
+    "authors": [
+        {
+            "name": "delirius",
+            "email": "contao@delirius.ch",
+            "homepage": "http://www.delirius.ch",
+            "role": "Developer"
+        }
+    ],
+    "require": {
+        "php": ">=5.3",
+        "contao/core": ">=3.1,<4"
+    },
+    "replace": {
+        "contao-legacy/delirius_linkliste": "*"
+    },
+    "support": {
+        "issues": "https://github.com/delirius/delirius_linkliste/issues"
+    }
+}
