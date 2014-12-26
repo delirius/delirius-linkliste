@@ -176,6 +176,11 @@ class class_linkliste extends Module
                 $j = 0;
             }
 
+            if (strstr($objData->url, 'link_url'))
+            {
+                $objData->url = $this->replaceInsertTags($objData->url);
+            }
+
             $arrNew = array
                 (
                 'class' => $class,

@@ -78,17 +78,13 @@ $GLOBALS['TL_DCA']['tl_link_data'] = array
         ),
         'operations' => array
             (
-            /*
             'checkLinksCategorie' => array
                 (
                 'label' => &$GLOBALS['TL_LANG']['MSC']['checklinkscategorie'],
-                'href' => 'lte=linktest',
+                'href' => '',
                 'icon' => 'show.gif',
                 'button_callback' => array('class_link_dat', 'checkLinkButton')
-           
             ),
-             * 
-             */
             'edit' => array
                 (
                 'label' => &$GLOBALS['TL_LANG']['tl_link_data']['edit'],
@@ -180,10 +176,6 @@ $GLOBALS['TL_DCA']['tl_link_data'] = array
                 (
                 array('class_link_dat', 'pagePicker')
             ),
-            'save_callback' => array
-                (
-                array('class_link_dat', 'checkLinkSave')
-            ),
             'sql' => "varchar(255) NOT NULL default ''"
         ),
         'target' => array
@@ -218,7 +210,6 @@ $GLOBALS['TL_DCA']['tl_link_data'] = array
         'url_protocol' => array
             (
             'label' => &$GLOBALS['TL_LANG']['tl_link_data']['url_protocol'],
-            'exclude' => true,
             'inputType' => 'text',
             'default' => 'http://',
             'eval' => array('mandatory' => false, 'maxlength' => 255),
@@ -315,17 +306,25 @@ class class_link_dat extends Backend
                 ->execute($intId);
     }
 
-    public function checkLinkSave($varValue, DataContainer $dc)
+    public function checkLink($linkliste_id, $linkliste_url = '')
     {
-        $varValue = html_entity_decode($varValue); // Anchor
+        
+        if ($linkliste_url == '')
+        {
+            $objData = $this->Database->prepare("SELECT url FROM tl_link_data WHERE id = ?")->execute($linkliste_id);
+            $linkliste_url = $objData->url;
+        }
+        if ($linkliste_url == '')
+        {
+            return false;
+        }
+        $linkliste_url = html_entity_decode($linkliste_url); // Anchor
 
-        $this->checkLink($varValue, $dc->id);
-        return $varValue;
-    }
-
-    public function checkLink($linkliste_url, $linkliste_id)
-    {
-
+        if (strstr($linkliste_url, 'link_url'))
+        {
+            $linkliste_url = '{{env::url}}/' . $linkliste_url;
+            $linkliste_url = $this->replaceInsertTags($linkliste_url);
+        }
         $objRequest = new Request();
         $objRequest->send($linkliste_url);
 
@@ -372,10 +371,15 @@ class class_link_dat extends Backend
 
     public function listLinks($arrRow)
     {
-        if (\Input::get('lte') == 'linktest')
+        if (\Input::get('key') == 'checklink' && \Input::get('id') != '' )
         {
 
-            $this->checkLink($arrRow['url'], $arrRow['id']);
+            $objData = $this->Database->prepare("SELECT url,id FROM tl_link_data WHERE pid = ?")->execute(\Input::get('id'));
+            while ($objData->next())
+            {
+                $this->checkLink($objData->id, $objData->url);
+            }
+            $this->redirect($this->getReferer());
         }
 
 
@@ -403,6 +407,10 @@ class class_link_dat extends Backend
             $error = ' <span class="linkliste_red" title="Error">&nbsp;' . $objData->be_text . '&nbsp;</span>';
         }
 
+        if (strstr($arrRow['url'], 'link_url'))
+        {
+            $arrRow['url'] = $this->replaceInsertTags($arrRow['url']);
+        }
 
         $line = '';
         $line .= '<div>';
@@ -418,32 +426,20 @@ class class_link_dat extends Backend
 
         return($line);
     }
-/*
+
     public function checkLinkButton($row, $href, $label, $title, $icon, $attributes)
     {
 
-        $return = '';
 
-        $objData = \Database::getInstance()->prepare('SELECT be_warning, be_error, be_text FROM tl_link_data WHERE id = ?')->execute($row['id']);
+        if (\Input::get('checklink') != '')
+        {
+            $this->checkLink(\Input::get('checklink'));
+            $this->redirect($this->getReferer());
+        }
 
-        if ($objData->be_warning > 0)
-        {
-            $warning = ' <span class="linkliste_orange" title="Warning">&nbsp;' . $objData->be_text . '&nbsp;</span>';
-        }
-        if ($objData->be_error > 0)
-        {
-            $error = ' <span class="linkliste_red" title="Error">&nbsp;' . $objData->be_text . '&nbsp;</span>';
-        }
-        
         $image = 'system/modules/delirius_linkliste/html/check.png';
-        $arrUnset[] = 'lte';
-        $arrUnset[] = 'id';
-        $return .= '<a class="be_button" href="' . $this->addToUrl($href . '&amp;lid=' . $row['id'] . '', true, $arrUnset) . '" title="' . $GLOBALS['TL_LANG']['MSC']['checklink'] . '"' . $attributes . '>' . $warning . $error . '&nbsp;' . Image::getHtml($image) . '</a>&nbsp;&nbsp;';
-
-        return $return;
-
+        return '<a class="be_button" href="/contao/main.php?do=delirius_linkliste&amp;table=tl_link_data&amp;checklink=' . $row['id'] . '" title="' . $GLOBALS['TL_LANG']['MSC']['checklink'] . '"' . $attributes . '>' . $warning . $error . '&nbsp;' . Image::getHtml($image) . '</a>&nbsp;&nbsp;';
     }
-*/
 
     public function pagePicker(DataContainer $dc)
     {

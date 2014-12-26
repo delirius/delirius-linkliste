@@ -79,8 +79,7 @@ $GLOBALS['TL_DCA']['tl_link_category'] = array
             'checkLinksCategorie' => array
                 (
                 'label' => &$GLOBALS['TL_LANG']['MSC']['checklinkscategorie'],
-                'href' => 'lte=linktest',
-                'icon' => 'show.gif',
+                'href' => 'table=tl_link_data',
                 'button_callback' => array('class_link_cat', 'checkLinkButton')
             ),
             'edit' => array
@@ -95,12 +94,6 @@ $GLOBALS['TL_DCA']['tl_link_category'] = array
                 'label' => &$GLOBALS['TL_LANG']['tl_link_category']['copy'],
                 'href' => 'act=copy',
                 'icon' => 'copy.gif'
-            ),
-            'cut' => array
-                (
-                'label' => &$GLOBALS['TL_LANG']['tl_link_data']['cut'],
-                'href' => 'act=paste&amp;mode=cut',
-                'icon' => 'cut.gif'
             ),
             'delete' => array
                 (
@@ -239,11 +232,9 @@ class class_link_cat extends Backend
 
         $image = 'system/modules/delirius_linkliste/html/check.png';
 
-        $return .= '<a class="be_button" href="' . $this->addToUrl($href . '&amp;id=' . $row['id'] . '&table=tl_link_data') . '" title="' . $GLOBALS['TL_LANG']['MSC']['checklinkscategorie'] . '"' . $attributes . '>' .  $warning . $error . '&nbsp;'.Image::getHtml($image) . '</a>&nbsp;&nbsp;';
+        $return .= '<a class="be_button" href="/contao/main.php?do=delirius_linkliste&amp;table=tl_link_data&amp;id=' . $row['id'] . '&key=checklink' . '" title="' . $GLOBALS['TL_LANG']['MSC']['checklinkscategorie'] . '"' . $attributes . '>' . $warning . $error . '&nbsp;' . Image::getHtml($image) . '</a>&nbsp;&nbsp;';
 
         return $return;
-
-        // return $this->replaceInsertTags('{{image::/' . $objFile->path . '?width=55&height=65}}');
     }
 
 }
