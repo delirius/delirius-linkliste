@@ -1,0 +1,26 @@
+<?php if (count($this->linkliste) > 0): ?>
+
+    <div id="linklist_extended" class="footer">
+        <?php foreach ($this->linkliste as $cat): ?>
+
+            <div class="linkliste_wrapper inline-block">
+                <div class="linkliste_categorie">
+                    <h3><?php echo $cat[0]['categorietitle']; ?></h3>
+                </div>
+                <?php $cc = count($cat); ?>
+                <?php for ($i = 0; $i < $cc; $i++): ?>
+                    <?php if ($cat[$i]['url'] != ''): ?>
+                        <div class="linkliste_item<?php echo $cat[$i]['class']; ?>">
+                            <a href="<?php echo $cat[$i]['url']; ?>" <?php echo ($cat[$i]['target'] ? LINK_NEW_WINDOW : LINK_BLUR); ?>><?php echo $cat[$i]['url_text']; ?></a>
+                        </div>
+                    <?php endif; ?>
+                <?php endfor; ?>
+            </div>
+
+        <?php endforeach; ?>
+    </div>
+
+<?php endif; ?>
+<?php
+$GLOBALS['TL_CSS'][] = 'system/modules/delirius_linkliste/html/footer.css';
+?>

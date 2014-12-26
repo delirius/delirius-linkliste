@@ -26,5 +26,6 @@ ClassLoader::addClasses(array
  */
 TemplateLoader::addFiles(array
 (
+	'linkliste_footer'   => 'system/modules/delirius_linkliste/templates',
 	'linkliste_standard' => 'system/modules/delirius_linkliste/templates',
 ));

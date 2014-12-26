@@ -1,6 +1,5 @@
 <?php
 
-
 /**
  * TYPOlight webCMS
  * Copyright (C) 2005 Leo Feyer
@@ -43,7 +42,7 @@ $GLOBALS['TL_DCA']['tl_module']['fields']['delirius_linkliste_categories'] = arr
     'exclude' => true,
     'inputType' => 'checkboxWizard',
     'foreignKey' => 'tl_link_category.title',
-    'eval' => array('multiple' => true, 'mandatory' => false,'tl_class' => 'm12'),
+    'eval' => array('multiple' => true, 'mandatory' => false, 'tl_class' => 'm12'),
     'sql' => "varchar(255) NOT NULL default ''"
 );
 
@@ -59,14 +58,14 @@ $GLOBALS['TL_DCA']['tl_module']['fields']['delirius_linkliste_fesort'] = array
 );
 
 $GLOBALS['TL_DCA']['tl_module']['fields']['delirius_linkliste_template'] = array
-    (
-    'label' => &$GLOBALS['TL_LANG']['tl_module']['delirius_linkliste_template'],
-    'default' => 'linkliste_standard',
-    'exclude' => true,
-    'inputType' => 'select',
-    'options_callback' => array('tl_module_linkliste', 'getTemplates'),
-    'eval' => array('tl_class' => 'w50'),
-    'sql' => "varchar(64) NOT NULL default ''"
+(
+'label' => &$GLOBALS['TL_LANG']['tl_module']['delirius_linkliste_template'],
+ 'default' => 'linkliste_standard',
+ 'exclude' => true,
+ 'inputType' => 'select',
+ 'options_callback' => array('tl_module_linkliste', 'getTemplates'),
+ 'eval' => array('includeBlankOption' => true, 'chosen' => true, 'tl_class' => 'w50'),
+ 'sql' => "varchar(64) NOT NULL default ''"
 );
 
 
@@ -119,7 +118,7 @@ class tl_module_linkliste extends Backend
      */
     public function getTemplates(DataContainer $dc)
     {
-        return $this->getTemplateGroup('linkliste_', $dc->activeRecord->pid);
+        return Controller::getTemplateGroup('linkliste_');
     }
 
 }
