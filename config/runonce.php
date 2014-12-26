@@ -56,7 +56,7 @@ class linklisteRunonce extends Controller
         }
         
         /* remove protocol */
-        $this->Database->prepare("UPDATE `tl_link_data` SET `url` = CONCAT(`url_protocol`, `url`)")->execute();
+        $this->Database->prepare("UPDATE `tl_link_data` SET `url` = CONCAT(`url_protocol`, `url`), url_protocol = ''")->execute();
         
         
          if (version_compare(VERSION, '3.2', '>=') )
