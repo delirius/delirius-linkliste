@@ -5,6 +5,7 @@
 
 #linklist_extended.footer .inline-block {
     display: inline-block;
+    vertical-align: top;
 }
 .ie7 #linklist_extended.footer .inline-block {
     display: inline;
