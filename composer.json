@@ -1,6 +1,6 @@
 {
     "name": "delirius/delirius_linkliste",
-    "description": "Linklist extended",
+    "description": "Manage links in different categories and they publish a collection of links",
     "keywords": ["contao", "links", "linklist", "linkliste", "linksammlung"],
     "type": "contao-module",
     "homepage": "http://www.delirius.ch",
