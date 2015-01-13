@@ -11,7 +11,7 @@
 /* adjust styling */
 #linklist_extended .linkliste_wrapper
 {
-    margin:24px 0 0 0;
+    padding:0 0 24px 0;
 }
 #linklist_extended .linkliste_categorie
 {
