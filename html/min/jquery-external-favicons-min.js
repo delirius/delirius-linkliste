@@ -1,0 +1,1 @@
+$(window).load(function(){var a=$('a[class^="ext_favicon"]');$.each(a,function(a,c){var n=""+c,i=n.replace(/^(http:\/\/[^\/]+).*$/,"$1")+"/favicon.ico",o=$(this).children("img"),t=new Image;t.src=i,t.onload=function(){o.attr("src",i)}})});

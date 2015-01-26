@@ -26,7 +26,8 @@
                         <div class="linkliste_item<?php echo $cat[$i]['class']; ?>">
                             <?php if ($this->showimage): ?>
                                 <a class="<?php echo $favicon_class; ?> image_link" href="<?php echo $cat[$i]['url']; ?>" <?php echo ($cat[$i]['title'] ? 'title="' . $cat[$i]['title'] . '"' : ''); ?> <?php echo ($cat[$i]['target'] ? LINK_NEW_WINDOW : LINK_BLUR); ?> >
-                                    <img class="favicon-img" src="<?php echo $cat[$i]['image']; ?>" <?php echo $this->delirius_linkliste_imagesize; ?> alt="<?php echo $cat[$i]['url_text']; ?>" style="<?php echo $this->delirius_linkliste_w . $this->delirius_linkliste_h; ?>"/>
+                                    <?php echo $cat[$i]['image']; ?>
+                                    <!-- <img class="favicon-img" src="<?php echo $cat[$i]['image_path']; ?>" alt="<?php echo $cat[$i]['url_text']; ?>" /> -->
                                 </a>                        
                             <?php endif; ?>
                             <a href="<?php echo $cat[$i]['url']; ?>" <?php echo ($cat[$i]['target'] ? LINK_NEW_WINDOW : LINK_BLUR); ?>><?php echo $cat[$i]['url_text']; ?></a>
@@ -34,12 +35,12 @@
                                 <div class="linkliste_text"><?php echo $cat[$i]['description']; ?></div>
                             <?php endif; ?>
                         </div>
-                
+
                     <?php endif; ?>
 
                 <?php endfor; ?>
             </div>
-        
+
         <?php endforeach; ?>
     </div>
 
@@ -48,9 +49,9 @@
 <?php
 if ($this->favicon):
     if ($this->mootools):
-        $GLOBALS['TL_JAVASCRIPT'][] = 'system/modules/delirius_linkliste/html/Mootools-External-Favicon.js|static';
+        $GLOBALS['TL_JAVASCRIPT'][] = 'system/modules/delirius_linkliste/html/min/Mootools-External-Favicon-min.js|static';
     else:
-        $GLOBALS['TL_JAVASCRIPT'][] = 'system/modules/delirius_linkliste/html/jquery-external-favicons.js|static';
+        $GLOBALS['TL_JAVASCRIPT'][] = 'system/modules/delirius_linkliste/html/min/jquery-external-favicons-min.js|static';
     endif;
     $GLOBALS['TL_CSS'][] = 'system/modules/delirius_linkliste/html/favicon.css';
 endif;

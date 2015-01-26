@@ -1,6 +1,5 @@
 <?php
 
-
 /**
  * Contao Open Source CMS
  * Copyright (C) 2005-2010 Leo Feyer
@@ -83,23 +82,12 @@ class class_linkliste extends Module
 
         /* imagesize */
         $imgSize = deserialize($this->delirius_linkliste_imagesize);
-        $image_size = '';
-        if ($imgSize[0])
-        {
-            $image_size .= ' width="' . $imgSize[0] . '"';
-            $this->Template->delirius_linkliste_w = 'width:' . $imgSize[0] . 'px;';
-        }
-        if ($imgSize[1])
-        {
-            $image_size .= ' height="' . $imgSize[1] . '"';
-            $this->Template->delirius_linkliste_h = 'height:' . $imgSize[1] . 'px;';
-        }
         $this->Template->delirius_linkliste_imagesize = $image_size;
 
         /* standard image */
         if ($objParams->delirius_linkliste_standardfavicon == '')
         {
-            $this->Template->standardfavicon = 'system/modules/delirius_linkliste/html/icon.png';
+            $this->Template->standardfavicon_path = 'system/modules/delirius_linkliste/html/icon.png';
         } else
         {
 
@@ -107,7 +95,7 @@ class class_linkliste extends Module
 
             if ($objFile === null)
             {
-                $this->Template->standardfavicon = 'system/modules/delirius_linkliste/html/icon.png';
+                $this->Template->standardfavicon_path = 'system/modules/delirius_linkliste/html/icon.png';
 
                 if (!\Validator::isUuid($objData->image))
                 {
@@ -115,23 +103,9 @@ class class_linkliste extends Module
                 }
             } else
             {
-                $this->Template->standardfavicon = $this->getImage($objFile->path, $imgSize[0], $imgSize[1], $imgSize[2]);
+                $this->Template->standardfavicon_path = $objFile->path;
             }
         }
-
-        $imgSize = deserialize($this->delirius_linkliste_imagesize);
-        $image_size = '';
-        if ($imgSize[0])
-        {
-            $image_size .= ' width="' . $imgSize[0] . '"';
-            $this->Template->delirius_linkliste_w = 'width:' . $imgSize[0] . 'px;';
-        }
-        if ($imgSize[1])
-        {
-            $image_size .= ' height="' . $imgSize[1] . '"';
-            $this->Template->delirius_linkliste_h = 'height:' . $imgSize[1] . 'px;';
-        }
-        $this->Template->delirius_linkliste_imagesize = $image_size;
 
         // Check for javascript framework
         if (TL_MODE == 'FE')
@@ -193,7 +167,7 @@ class class_linkliste extends Module
                 'url_title' => trim($objData->url_title),
                 'description' => trim($objData->description),
             );
-            if (strlen($objData->url_text) == 0)
+            if (strlen($arrNew['url_text']) == '')
             {
                 $arrNew['url_text'] = $arrNew['url'];
             }
@@ -201,19 +175,24 @@ class class_linkliste extends Module
             if (strlen($objData->image) == 0)
             {
                 $arrNew['image'] = '';
+                $arrNew['image_path'] = $this->Template->standardfavicon_path;
+                $this->Template->standardfavicon = \Image::getHtml(\Image::get($this->Template->standardfavicon_path, $imgSize[0], $imgSize[1], $imgSize[2]), $arrNew['url_text'], 'class="favicon-img"');
             } else
             {
                 $objFile = \FilesModel::findById($objData->image);
 
                 if ($objFile === null)
                 {
+                    $arrNew['image'] = '';
+                    $arrNew['image_path'] = $this->Template->standardfavicon_path;
                     if (!\Validator::isUuid($objData->image))
                     {
                         return '<p class="error">' . $GLOBALS['TL_LANG']['ERR']['version2format'] . '</p>';
                     }
                 } else
                 {
-                    $arrNew['image'] = $this->getImage($objFile->path, $imgSize[0], $imgSize[1], $imgSize[2]);
+                    $arrNew['image_path'] = \Image::get($objFile->path, $imgSize[0], $imgSize[1], $imgSize[2]);
+                    $arrNew['image'] = \Image::getHtml($arrNew['image_path'], $arrNew['url_text'], 'class="favicon-img"');
                 }
             }
             $arrNew['categorieimage'] = '';
