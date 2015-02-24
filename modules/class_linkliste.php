@@ -56,11 +56,12 @@ class class_linkliste extends Module
 
 
         //delirius_linkliste_categories
-        if ($objParams->delirius_linkliste_categories != '')
+        if ($objParams->delirius_linkliste_categories == '')
         {
-            $arrCat = deserialize($objParams->delirius_linkliste_categories);
-            $strAnd = implode(',', $arrCat);
+            return;
         }
+        $arrCat = deserialize($objParams->delirius_linkliste_categories);
+        $strAnd = implode(',', $arrCat);
 
         // random, order, title
         if ($objParams->delirius_linkliste_fesort == 'random')
