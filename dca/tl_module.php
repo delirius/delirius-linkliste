@@ -51,7 +51,7 @@ $GLOBALS['TL_DCA']['tl_module']['fields']['delirius_linkliste_fesort'] = array
     'label' => &$GLOBALS['TL_LANG']['tl_module']['delirius_linkliste_fesort'],
     'exclude' => true,
     'inputType' => 'select',
-    'options' => array('random', 'order', 'url'),
+    'options' => array('random', 'order', 'title', 'url'),
     'reference' => &$GLOBALS['TL_LANG']['tl_module']['fesort_option'],
     'eval' => array('mandatory' => true, 'tl_class' => 'w50'),
     'sql' => "varchar(32) NOT NULL default ''"
