@@ -70,6 +70,9 @@ class class_linkliste extends Module
         } elseif ($objParams->delirius_linkliste_fesort == 'order')
         {
             $strOrder = ' b.sorting, a.sorting';
+        } elseif ($objParams->delirius_linkliste_fesort == 'title')
+        {
+            $strOrder = ' b.sorting, a.url_title';
         } else
         {
             $strOrder = ' b.sorting, a.url';
