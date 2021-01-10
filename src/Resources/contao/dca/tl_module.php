@@ -43,7 +43,7 @@ $GLOBALS['TL_DCA']['tl_module']['fields']['delirius_linkliste_categories'] = arr
     'inputType' => 'checkboxWizard',
     'foreignKey' => 'tl_link_category.title',
     'eval' => array('multiple' => true, 'mandatory' => false, 'tl_class' => 'm12'),
-    'sql' => "varchar(255) NOT NULL default ''"
+    'sql' => "blob NULL"
 );
 
 $GLOBALS['TL_DCA']['tl_module']['fields']['delirius_linkliste_fesort'] = array
@@ -85,7 +85,7 @@ $GLOBALS['TL_DCA']['tl_module']['fields']['delirius_linkliste_showimage'] = arra
     'exclude' => true,
     'inputType' => 'checkbox',
     'default' => '1',
-    'eval' => array('mandatory' => false),
+    'eval' => array('mandatory' => false, 'tl_class' => 'clr'),
     'sql' => "char(1) NOT NULL default ''"
 );
 
@@ -104,7 +104,7 @@ $GLOBALS['TL_DCA']['tl_module']['fields']['delirius_linkliste_imagesize'] = arra
     'inputType' => 'imageSize',
     'options' => $GLOBALS['TL_CROP'],
     'reference' => &$GLOBALS['TL_LANG']['MSC'],
-    'eval' => array('rgxp' => 'digit', 'nospace' => true, 'helpwizard' => true),
+    'eval' => array('rgxp' => 'digit', 'nospace' => true, 'helpwizard' => true, 'tl_class' => 'clr'),
     'sql' => "varchar(64) NOT NULL default ''"
 );
 

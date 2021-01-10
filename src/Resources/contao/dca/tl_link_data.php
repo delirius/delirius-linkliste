@@ -218,7 +218,7 @@ $GLOBALS['TL_DCA']['tl_link_data'] = array
             'exclude' => true,
             'search' => true,
             'inputType' => 'textarea',
-            'eval' => array('style' => 'height:48px', 'tl_class' => 'clr', 'rte' => 'tinyMCE'),
+            'eval' => array('style' => 'height:48px', 'tl_class' => 'clr'),
             'sql' => "text NULL"
         ),
         'image' => array
@@ -244,7 +244,7 @@ $GLOBALS['TL_DCA']['tl_link_data'] = array
               'label' => &$GLOBALS['TL_LANG']['tl_link_data']['be_text'],
               'inputType' => 'text',
               'eval' => array('tl_class' => 'long', 'disabled' => true),
-             * 
+             *
              */
             'sql' => "varchar(255) NOT NULL default ''"
         ),
@@ -283,8 +283,8 @@ class class_link_dat extends Backend
     public function toggleVisibility($intId, $blnVisible)
     {
         // Check permissions to edit
-        Input::setGet('id', $intId);
-        Input::setGet('act', 'toggle');
+        \Input::setGet('id', $intId);
+        \Input::setGet('act', 'toggle');
 
 
 
@@ -299,7 +299,7 @@ class class_link_dat extends Backend
         }
 
         // Update the database
-        $this->Database->prepare("UPDATE tl_link_data SET published='" . ($blnVisible ? 1 : '') . "' WHERE id=?")
+        \Database::getInstance()->prepare("UPDATE tl_link_data SET published='" . ($blnVisible ? 1 : '') . "' WHERE id=?")
                 ->execute($intId);
     }
 
@@ -308,7 +308,7 @@ class class_link_dat extends Backend
 
         if ($linkliste_url == '')
         {
-            $objData = $this->Database->prepare("SELECT url FROM tl_link_data WHERE id = ?")->execute($linkliste_id);
+            $objData = \Database::getInstance()->prepare("SELECT url FROM tl_link_data WHERE id = ?")->execute($linkliste_id);
             $linkliste_url = $objData->url;
         }
         if ($linkliste_url == '')
@@ -331,12 +331,12 @@ class class_link_dat extends Backend
             echo '</pre>';
         endif;
 
-        $this->Database->prepare("UPDATE tl_link_data SET be_error = 0, be_warning = 0, be_text = '' WHERE id = ?")->execute($linkliste_id);
+        \Database::getInstance()->prepare("UPDATE tl_link_data SET be_error = 0, be_warning = 0, be_text = '' WHERE id = ?")->execute($linkliste_id);
         $error = '';
 
         if ($objRequest->code == 0)
         {
-            $this->Database->prepare("UPDATE tl_link_data SET be_error = 1 WHERE id=?")->execute($linkliste_id);
+            \Database::getInstance()->prepare("UPDATE tl_link_data SET be_error = 1 WHERE id=?")->execute($linkliste_id);
             if (strstr($objRequest->error, 'Name or service not known'))
             {
                 $error = 'Name or service not known';
@@ -346,11 +346,11 @@ class class_link_dat extends Backend
             }
         } elseif ($objRequest->code >= 400)
         {
-            $this->Database->prepare("UPDATE tl_link_data SET be_error = 1 WHERE id=?")->execute($linkliste_id);
+            \Database::getInstance()->prepare("UPDATE tl_link_data SET be_error = 1 WHERE id=?")->execute($linkliste_id);
             $error = $objRequest->error;
         } elseif ($objRequest->code >= 300)
         {
-            $this->Database->prepare("UPDATE tl_link_data SET be_warning = 1 WHERE id=?")->execute($linkliste_id);
+            \Database::getInstance()->prepare("UPDATE tl_link_data SET be_warning = 1 WHERE id=?")->execute($linkliste_id);
             if ($objRequest->code == 301)
             {
                 $error = 'Moved Permanently';
@@ -362,17 +362,17 @@ class class_link_dat extends Backend
 
         if ($error != '' || $objRequest->code > 0)
         {
-            $this->Database->prepare("UPDATE tl_link_data SET be_text = ? WHERE id=?")->execute($objRequest->code . ' ' . $error, $linkliste_id);
+            \Database::getInstance()->prepare("UPDATE tl_link_data SET be_text = ? WHERE id=?")->execute($objRequest->code . ' ' . $error, $linkliste_id);
             //$objRequest->response
         }
 
         /* duplicates */
-        $objData = $this->Database->prepare("SELECT id,be_text FROM tl_link_data WHERE url LIKE ?")->execute('%%' . $linkliste_url . '%%');
+        $objData = \Database::getInstance()->prepare("SELECT id,be_text FROM tl_link_data WHERE url LIKE ?")->execute('%%' . $linkliste_url . '%%');
         if ($objData->numRows > 1)
         {
             while ($objData->next())
             {
-                $this->Database->prepare("UPDATE tl_link_data SET be_warning = 1 , be_text = ? WHERE id=?")->execute('Duplicate entrys ', $objData->id);
+                \Database::getInstance()->prepare("UPDATE tl_link_data SET be_warning = 1 , be_text = ? WHERE id=?")->execute('Duplicate entrys ', $objData->id);
             }
         }
     }
@@ -382,7 +382,7 @@ class class_link_dat extends Backend
         if (\Input::get('key') == 'checklink' && \Input::get('id') != '')
         {
 
-            $objData = $this->Database->prepare("SELECT url,id FROM tl_link_data WHERE pid = ?")->execute(\Input::get('id'));
+            $objData = \Database::getInstance()->prepare("SELECT url,id FROM tl_link_data WHERE pid = ?")->execute(\Input::get('id'));
             while ($objData->next())
             {
                 $this->checkLink($objData->id, $objData->url);
@@ -404,7 +404,7 @@ class class_link_dat extends Backend
 
 
         $query = ' SELECT * FROM tl_link_data WHERE id = ? ';
-        $objData = $this->Database->prepare($query)->execute($arrRow['id']);
+        $objData = \Database::getInstance()->prepare($query)->execute($arrRow['id']);
 
         if ($objData->be_warning > 0)
         {
@@ -445,8 +445,21 @@ class class_link_dat extends Backend
             $this->redirect($this->getReferer());
         }
 
-        $image = 'system/modules/delirius_linkliste/html/check.png';
-        return '<a class="be_button" href="/contao/main.php?do=delirius_linkliste&amp;table=tl_link_data&amp;checklink=' . $row['id'] . '" title="' . $GLOBALS['TL_LANG']['MSC']['checklink'] . '"' . $attributes . '>' . $warning . $error . '&nbsp;' . Image::getHtml($image) . '</a>&nbsp;&nbsp;';
+    //    $image = 'system/modules/delirius_linkliste/html/check.png';
+        $image = '<?xml version="1.0" encoding="utf-8"?>
+        <!-- Generator: Adobe Illustrator 25.0.1, SVG Export Plug-In . SVG Version: 6.00 Build 0)  -->
+        <svg version="1.1" id="Ebene_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+             viewBox="0 0 24 24" style="enable-background:new 0 0 24 24;" xml:space="preserve">
+        <style type="text/css">
+        svg{width:16px}
+        .st0{fill:none}
+        </style>
+        <path class="st0" d="M0,0h24v24H0V0z"/>
+        <path d="M3.9,12c0-1.7,1.4-3.1,3.1-3.1h4V7H7c-2.8,0-5,2.2-5,5s2.2,5,5,5h4v-1.9H7C5.3,15.1,3.9,13.7,3.9,12z M8,13h8v-2H8V13z
+             M17,7h-4v1.9h4c1.7,0,3.1,1.4,3.1,3.1s-1.4,3.1-3.1,3.1h-4V17h4c2.8,0,5-2.2,5-5S19.8,7,17,7z"/>
+        </svg>';
+
+        return '<a class="be_button" href="/contao/main.php?do=delirius_linkliste&amp;table=tl_link_data&amp;checklink=' . $row['id'] . '" title="' . $GLOBALS['TL_LANG']['MSC']['checklink'] . '"' . $attributes . '>' . $warning . $error . '&nbsp;' . $image . '</a>&nbsp;&nbsp;';
     }
 
     public function pagePicker(DataContainer $dc)

@@ -1,11 +1,9 @@
 {
-    "name": "delirius/delirius_linkliste",
+    "name": "delirius/delirius-linkliste",
     "description": "Manage links in different categories and they publish a collection of links",
-    "keywords": ["contao", "links", "linklist", "linkliste", "linksammlung"],
-    "type": "contao-module",
-    "homepage": "http://www.delirius.ch",
-    "license": "LGPL-3.0+",
-    "authors": [
+    "type": "contao-bundle",
+    "license": "LGPL-3.0-or-later",
+     "authors": [
         {
             "name": "delirius",
             "email": "contao@delirius.ch",
@@ -14,26 +12,14 @@
         }
     ],
     "require": {
-        "php": ">=5.3",
-        "contao/core": ">=3.1,<4",
-        "contao-community-alliance/composer-plugin": "~2.0"
-
+        "contao/core-bundle": "^4.4"
     },
-    "replace": {
-        "contao-legacy/delirius_linkliste": "*"
-    },
-    "support": {
-        "issues": "https://github.com/delirius/delirius_linkliste/issues"
+    "autoload": {
+        "psr-4": {
+            "Delirius\\Linkliste\\": "src/"
+        }
     },
     "extra": {
-        "contao": {
-            "sources": {
-                "": "system/modules/delirius_linkliste"
-            },
-            "runonce": [
-                "system/modules/delirius_linkliste/runonce.php"
-            ]
-        }
+         "contao-manager-plugin": "Delirius\\Linkliste\\ContaoManager\\Plugin"
     }
-
 }
