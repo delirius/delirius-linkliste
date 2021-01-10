@@ -1,14 +1,24 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!-- Generator: Adobe Illustrator 25.0.1, SVG Export Plug-In . SVG Version: 6.00 Build 0)  -->
 <svg version="1.1" id="Ebene_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
-	 viewBox="0 0 100 100" style="enable-background:new 0 0 100 100;" xml:space="preserve">
-<style type="text/css">
-	.st0{fill:#FF9900;}
-	.st1{fill:#FFFFFF;}
-</style>
-<circle class="st0" cx="50" cy="50" r="50"/>
+	 viewBox="0 0 73 38" style="enable-background:new 0 0 73 38;" xml:space="preserve">
 <g>
-	<circle class="st1" cx="50" cy="79.2" r="9.9"/>
-	<polygon class="st1" points="57.9,10.9 42.1,10.9 43.6,60.9 56.4,60.9 	"/>
+	<g>
+		<g>
+			<g>
+				<path d="M53.5,38h-8C43,38,41,36,41,33.5s2-4.5,4.5-4.5h8C59.3,29,64,24.5,64,19S59.3,9,53.5,9h-8C43,9,41,7,41,4.5S43,0,45.5,0
+					h8C64.3,0,73,8.5,73,19S64.3,38,53.5,38z"/>
+			</g>
+		</g>
+		<g>
+			<g>
+				<path d="M19.5,0h8C30,0,32,2,32,4.5S30,9,27.5,9h-8C13.7,9,9,13.5,9,19s4.7,10,10.5,10h8c2.5,0,4.5,2,4.5,4.5S30,38,27.5,38h-8
+					C8.7,38,0,29.5,0,19S8.7,0,19.5,0z"/>
+			</g>
+		</g>
+	</g>
+	<g>
+		<path d="M49.5,23.5h-26c-2.5,0-4.5-2-4.5-4.5s2-4.5,4.5-4.5h26c2.5,0,4.5,2,4.5,4.5S52,23.5,49.5,23.5z"/>
+	</g>
 </g>
 </svg>

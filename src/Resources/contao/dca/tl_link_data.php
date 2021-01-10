@@ -369,7 +369,7 @@ class class_link_dat extends Backend
         $objRequest = new \Request();
         $objRequest->send($linkliste_url);
 
-        if (true):
+        if (false):
             echo '<pre>';
             print_r($objRequest);
             echo '</pre>';
