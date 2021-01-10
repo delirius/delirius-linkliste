@@ -236,19 +236,7 @@ class class_link_cat extends Backend
             $error = ' <span class="linkliste_red" title="Error">&nbsp;' . $objData->be_error . '&nbsp;</span>';
         }
 
-//        $image = '/delirius/delirius_linkliste/html/check.png';
-        $image = '<?xml version="1.0" encoding="utf-8"?>
-        <!-- Generator: Adobe Illustrator 25.0.1, SVG Export Plug-In . SVG Version: 6.00 Build 0)  -->
-        <svg version="1.1" id="Ebene_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
-        	 viewBox="0 0 24 24" style="enable-background:new 0 0 24 24;" xml:space="preserve">
-        <style type="text/css">
-        svg{width:16px}
-        .st0{fill:none}
-        </style>
-        <path class="st0" d="M0,0h24v24H0V0z"/>
-        <path d="M3.9,12c0-1.7,1.4-3.1,3.1-3.1h4V7H7c-2.8,0-5,2.2-5,5s2.2,5,5,5h4v-1.9H7C5.3,15.1,3.9,13.7,3.9,12z M8,13h8v-2H8V13z
-        	 M17,7h-4v1.9h4c1.7,0,3.1,1.4,3.1,3.1s-1.4,3.1-3.1,3.1h-4V17h4c2.8,0,5-2.2,5-5S19.8,7,17,7z"/>
-        </svg>';
+        $image = '<img src="bundles/deliriuslinkliste/check.svg" width="16" height="16">';
 
         $return .= '<a class="be_button" href="/contao/main.php?do=delirius_linkliste&amp;table=tl_link_data&amp;id=' . $row['id'] . '&key=checklink' . '" title="' . $GLOBALS['TL_LANG']['MSC']['checklinkscategorie'] . '"' . $attributes . '>' . $warning . $error . '&nbsp;' . $image . '</a>&nbsp;&nbsp;';
 
