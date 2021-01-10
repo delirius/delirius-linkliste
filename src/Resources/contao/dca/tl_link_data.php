@@ -167,7 +167,7 @@ $GLOBALS['TL_DCA']['tl_link_data'] = array
             'exclude' => true,
             'search' => true,
             'inputType' => 'text',
-            'default' => 'http://www.',
+            'default' => 'https://www.',
             'eval' => array('mandatory' => false, 'rgxp' => 'url', 'decodeEntities' => true, 'maxlength' => 255, 'fieldType' => 'radio', 'tl_class' => 'w50 wizard'),
             'wizard' => array
                 (
@@ -315,14 +315,58 @@ class class_link_dat extends Backend
         {
             return false;
         }
+        \Database::getInstance()->prepare("UPDATE tl_link_data SET be_error = 0, be_warning = 0, be_text = '' WHERE id = ?")->execute($linkliste_id);
+
         $linkliste_url = html_entity_decode($linkliste_url); // Anchor
 
-        if (strstr($linkliste_url, 'link_url'))
-        {
-            $linkliste_url = '{{env::url}}/' . $linkliste_url;
-            $linkliste_url = $this->replaceInsertTags($linkliste_url);
+
+
+        /* Link intern/extern */
+        if (strstr($linkliste_url, 'link_url')) {
+            // Link intern
+
+
+            // $linkliste_url = '{{env::url}}/' . $linkliste_url;
+            // $linkliste_url = $this->replaceInsertTags($linkliste_url);
+            $error = '';
+            preg_match("|\d+|", $linkliste_url, $arrId);
+
+            if (NULL !== $arrId[0]) {
+            $objIntern = \Database::getInstance()->prepare("SELECT pid, type, published FROM tl_page WHERE id = ?")->execute($arrId[0]);
+
+            if ($objIntern->numRows) {
+                // id existiert
+                if ($objIntern->published != 1) {
+                    $error = 'Page not published';
+                } else {
+                    $sql_parent = 'select t.id as id, published, @pv:=t.pid as parent from (select * from tl_page order by id desc) t join (select @pv:='.$objIntern->pid.')tmp where t.id=@pv;';
+                    $objInternParent = \Database::getInstance()->prepare($sql_parent)->execute();
+                    while ($objInternParent->next()) {
+                        // $arrP[] = $objInternParent->id.' '.$objInternParent->published;
+                        if ($objInternParent->published != 1) {
+                            $error = 'Parent page ('.$objInternParent->id.') not published';
+                        }
+                    }
+                }
+                if ($objIntern->type == 'forward') {
+                    $error = 'Page is redirected';
+                }
+
+            } else {
+                $error = 'Page (ID) not exist';
+            }
+
+            /* Update status */
+            if ($error != '') {
+                \Database::getInstance()->prepare("UPDATE tl_link_data SET be_error = 1, be_text = ? WHERE id=?")->execute($error, $linkliste_id);
+            }
         }
-        $objRequest = new Request();
+
+    } else {
+        // Link extern
+
+
+        $objRequest = new \Request();
         $objRequest->send($linkliste_url);
 
         if (true):
@@ -331,7 +375,6 @@ class class_link_dat extends Backend
             echo '</pre>';
         endif;
 
-        \Database::getInstance()->prepare("UPDATE tl_link_data SET be_error = 0, be_warning = 0, be_text = '' WHERE id = ?")->execute($linkliste_id);
         $error = '';
 
         if ($objRequest->code == 0)
@@ -351,11 +394,11 @@ class class_link_dat extends Backend
         } elseif ($objRequest->code >= 300)
         {
             \Database::getInstance()->prepare("UPDATE tl_link_data SET be_warning = 1 WHERE id=?")->execute($linkliste_id);
-            if ($objRequest->code == 301)
-            {
+            if ($objRequest->code == 301) {
                 $error = 'Moved Permanently';
-            } else
-            {
+            } elseif ($objRequest->code == 302) {
+                $error = 'Found (with redirect)';
+        } else {
                 $error = $objRequest->error;
             }
         }
@@ -375,6 +418,8 @@ class class_link_dat extends Backend
                 \Database::getInstance()->prepare("UPDATE tl_link_data SET be_warning = 1 , be_text = ? WHERE id=?")->execute('Duplicate entrys ', $objData->id);
             }
         }
+    } // end link intern/extern
+
     }
 
     public function listLinks($arrRow)
