@@ -57,50 +57,45 @@ class linkList extends \Module
 
 
 
+
         /* imagesize */
-        $imgSize = deserialize($this->delirius_linkliste_imagesize);
-        $this->Template->delirius_linkliste_imagesize = $image_size;
+
+        $arrSize = \StringUtil::deserialize($this->imgSize);
+        if ( $arrSize[0] > 0 || $arrSize[1] > 0 )
+        {
+            // {{image::58ca4a90?width=200&height=150&mode=center_center&alt=alt}}
+            $arrSizeText = array();
+            if ($arrSize[0] > 0) {
+                $arrSizeText[] = 'width='.$arrSize[0];
+            }
+            if ($arrSize[1] > 0) {
+                $arrSizeText[] = 'height='.$arrSize[1];
+            }
+            if ($arrSize[2] != '') {
+                $arrSizeText[] = 'mode='.$arrSize[2];
+            }
+
+        }
+        elseif ( is_numeric($arrSize[2]) )
+        {
+            // {{picture::58ca4a90?size=1&alt=alt}}
+            $arrSizeText[] = 'size='.$arrSize[2];
+            $this->Template->imagetype = 'picture';
+        } else {
+            $arrSizeText[] = 'width=100';
+            $arrSizeText[] = 'mode=proportional';
+        }
+
+
+        $this->Template->imagesize = implode('&',$arrSizeText);
+
 
         /* standard image */
-        // if ($objParams->delirius_linkliste_standardfavicon == '')
-        // {
-        //     $this->Template->standardfavicon_path = 'system/modules/delirius_linkliste/html/icon.png';
-        // } else
-        // {
-        //
-        //     $objFile = \FilesModel::findById($objParams->delirius_linkliste_standardfavicon);
-        //
-        //     if ($objFile === null)
-        //     {
-        //         $this->Template->standardfavicon_path = 'system/modules/delirius_linkliste/html/icon.png';
-        //
-        //         if (!\Validator::isUuid($objData->image))
-        //         {
-        //             return '<p class="error">' . $GLOBALS['TL_LANG']['ERR']['version2format'] . '</p>';
-        //         }
-        //     } else
-        //     {
-        //         $this->Template->standardfavicon_path = $objFile->path;
-        //     }
-        // }
+         if ($objParams->delirius_linkliste_standardfavicon != '')
+         {
+             $this->Template->standardimage = \StringUtil::binToUuid($objParams->delirius_linkliste_standardfavicon);
+         }
 
-        // Check for javascript framework
-        if (TL_MODE == 'FE')
-        {
-
-            /** @type PageModel $objPage */
-            global $objPage;
-            $this->Template->jquery = false;
-            $this->Template->mootools = false;
-            if ($objPage->getRelated('layout')->addJQuery)
-            {
-                $this->Template->jquery = true;
-            }
-            if ($objPage->getRelated('layout')->addMooTools)
-            {
-                $this->Template->mootools = true;
-            }
-        }
         $arrLinks = array();
 
         $query = ' SELECT a.*, b.title AS categorietitle, b.description AS categoriedescription, b.image AS categorieimage FROM tl_link_data a, tl_link_category b WHERE a.pid=b.id AND b.id IN (' . $strAnd . ') AND b.published = "1" AND a.published = "1" ORDER BY FIELD(b.id,' . $strAnd . '),' . $strOrder;
@@ -150,29 +145,19 @@ class linkList extends \Module
                 $arrNew['url_text'] = $arrNew['url'];
             }
 
-            if (strlen($objData->image) == 0)
+            /* Image */
+            if ($objParams->delirius_linkliste_showimage)
             {
-                $arrNew['image'] = '';
-                $arrNew['image_path'] = $this->Template->standardfavicon_path;
-                $this->Template->standardfavicon = \Image::getHtml(\Image::get($this->Template->standardfavicon_path, $imgSize[0], $imgSize[1], $imgSize[2]), $arrNew['url_text'], 'class="favicon-img"');
-            } else
-            {
-                $objFile = \FilesModel::findById($objData->image);
-
-                if ($objFile === null)
+                if (strlen($objData->image) == 0)
                 {
-                    $arrNew['image'] = '';
-                    $arrNew['image_path'] = $this->Template->standardfavicon_path;
-                    if (!\Validator::isUuid($objData->image))
-                    {
-                        return '<p class="error">' . $GLOBALS['TL_LANG']['ERR']['version2format'] . '</p>';
-                    }
-                } else
+                    $arrNew['image'] = $this->Template->standardimage;
+                }
+                else
                 {
-                    $arrNew['image_path'] = \Image::get($objFile->path, $imgSize[0], $imgSize[1], $imgSize[2]);
-                    $arrNew['image'] = \Image::getHtml($arrNew['image_path'], $arrNew['url_text'], 'class="favicon-img"');
+                    $arrNew['image'] = \StringUtil::binToUuid($objData->image);
                 }
             }
+
             $arrNew['categorieimage'] = '';
             if (strlen($objData->categorieimage) != 0)
             {
@@ -183,7 +168,6 @@ class linkList extends \Module
             $arrLinks[$objData->categorietitle][] = $arrNew;
         }
         $this->Template->linkliste = $arrLinks;
-        $this->Template->favicon = $objParams->delirius_linkliste_favicon;
         $this->Template->showimage = $objParams->delirius_linkliste_showimage;
     }
 

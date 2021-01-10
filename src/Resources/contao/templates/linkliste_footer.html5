@@ -1,17 +1,26 @@
 <?php if (count($this->linkliste) > 0): ?>
-
-    <div id="linklist_extended" class="footer">
+    <div class="linkliste_extended footer">
         <?php foreach ($this->linkliste as $cat): ?>
 
-            <div class="linkliste_wrapper inline-block">
+            <div class="linkliste_wrapper">
                 <div class="linkliste_categorie">
-                    <h3><?php echo $cat[0]['categorietitle']; ?></h3>
+                    <h3><?= $cat[0]['categorietitle']; ?></h3>
+                    <?php if ($cat[0]['categorieimage']): ?>
+                        {{image::<?= $cat[0]['categorieimage']; ?>?width=240&height=240&mode=proportional&alt=<?= $cat[0]['categorietitle']; ?>}}
+                    <?php endif; ?>
                 </div>
                 <?php $cc = count($cat); ?>
                 <?php for ($i = 0; $i < $cc; $i++): ?>
                     <?php if ($cat[$i]['url'] != ''): ?>
-                        <div class="linkliste_item<?php echo $cat[$i]['class']; ?>">
-                            <a href="<?php echo $cat[$i]['url']; ?>" <?php echo ($cat[$i]['target'] ? LINK_NEW_WINDOW : LINK_BLUR); ?>><?php echo $cat[$i]['url_text']; ?></a>
+                        <div class="linkliste_item<?= $cat[$i]['class']; ?>">
+                            <a href="<?= $cat[$i]['url']; ?>" <?= ($cat[$i]['target'] ? LINK_NEW_WINDOW : LINK_BLUR); ?>><?= $cat[$i]['url_text']; ?></a>
+                            <?php if ($this->showimage && $cat[$i]['image']): ?>
+                                <?php if ($this->imagetype === 'picture'): ?>
+                                    {{picture::<?= $cat[$i]['image']; ?>?<?= $this->imagesize; ?>&alt=<?= $cat[$i]['url_text']; ?>}}
+                                <?php else: ?>
+                                    {{image::<?= $cat[$i]['image']; ?>?<?= $this->imagesize; ?>&alt=<?= $cat[$i]['url_text']; ?>}}
+                                <?php endif; ?>
+                            <?php endif; ?>
                         </div>
                     <?php endif; ?>
                 <?php endfor; ?>
@@ -19,8 +28,4 @@
 
         <?php endforeach; ?>
     </div>
-
 <?php endif; ?>
-<?php
-$GLOBALS['TL_CSS'][] = 'system/modules/delirius_linkliste/html/footer.css';
-?>

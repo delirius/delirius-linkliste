@@ -1,38 +1,34 @@
 <?php if (count($this->linkliste) > 0): ?>
 
-    <div id="linklist_extended">
+    <div class="linkliste_extended">
         <?php foreach ($this->linkliste as $cat): ?>
 
             <div class="linkliste_wrapper">
                 <div class="linkliste_categorie">
-                    <h3><?php echo $cat[0]['categorietitle']; ?> (<?php echo $cat[0]['categoriecount']; ?>)</h3>
+                    <h3><?= $cat[0]['categorietitle']; ?> (<?= $cat[0]['categoriecount']; ?>)</h3>
                     <?php if ($cat[0]['categoriedescription']): ?>
-                        <div class="linkliste_categorietext"><?php echo $cat[0]['categoriedescription']; ?></div>
+                        <div class="linkliste_categorietext"><?= $cat[0]['categoriedescription']; ?></div>
                     <?php endif; ?>
                     <?php if ($cat[0]['categorieimage']): ?>
-                        <img src="<?php echo $this->getImage($cat[0]['categorieimage'], 240, 240, 'proportional'); ?>" />
+                        {{image::<?= $cat[0]['categorieimage']; ?>?width=240&height=240&mode=proportional&alt=<?= $cat[0]['categorietitle']; ?>}}
                     <?php endif; ?>
                 </div>
                 <?php $cc = count($cat); ?>
                 <?php for ($i = 0; $i < $cc; $i++): ?>
                     <?php if ($cat[$i]['url'] != ''): ?>
-                        <?php if ($cat[$i]['image'] == ''): ?>
-                            <?php $favicon_class = 'ext_favicon'; ?>
-                            <?php $cat[$i]['image'] = $this->standardfavicon; ?>
-                        <?php else: ?>
-                            <?php $favicon_class = ''; ?>
-                        <?php endif; ?>
-
-                        <div class="linkliste_item<?php echo $cat[$i]['class']; ?>">
-                            <?php if ($this->showimage): ?>
-                                <a class="<?php echo $favicon_class; ?> image_link" href="<?php echo $cat[$i]['url']; ?>" <?php echo ($cat[$i]['title'] ? 'title="' . $cat[$i]['title'] . '"' : ''); ?> <?php echo ($cat[$i]['target'] ? LINK_NEW_WINDOW : LINK_BLUR); ?> >
-                                    <?php echo $cat[$i]['image']; ?>
-                                    <!-- <img class="favicon-img" src="<?php echo $cat[$i]['image_path']; ?>" alt="<?php echo $cat[$i]['url_text']; ?>" /> -->
-                                </a>                        
+                        <div class="linkliste_item<?= $cat[$i]['class']; ?>">
+                            <?php if ($this->showimage && $cat[$i]['image']): ?>
+                                <a class="<?= $favicon_class; ?> image_link" href="<?= $cat[$i]['url']; ?>" <?= ($cat[$i]['title'] ? 'title="' . $cat[$i]['title'] . '"' : ''); ?> <?= ($cat[$i]['target'] ? LINK_NEW_WINDOW : LINK_BLUR); ?> >
+                                        <?php if ($this->imagetype === 'picture'): ?>
+                                            {{picture::<?= $cat[$i]['image']; ?>?<?= $this->imagesize; ?>&alt=<?= $cat[$i]['url_text']; ?>}}
+                                        <?php else: ?>
+                                            {{image::<?= $cat[$i]['image']; ?>?<?= $this->imagesize; ?>&alt=<?= $cat[$i]['url_text']; ?>}}
+                                        <?php endif; ?>
+                                </a>
                             <?php endif; ?>
-                            <a href="<?php echo $cat[$i]['url']; ?>" <?php echo ($cat[$i]['target'] ? LINK_NEW_WINDOW : LINK_BLUR); ?>><?php echo $cat[$i]['url_text']; ?></a>
+                            <a href="<?= $cat[$i]['url']; ?>" <?= ($cat[$i]['target'] ? LINK_NEW_WINDOW : LINK_BLUR); ?>><?= $cat[$i]['url_text']; ?></a>
                             <?php if ($cat[$i]['description'] != ''): ?>
-                                <div class="linkliste_text"><?php echo $cat[$i]['description']; ?></div>
+                                <div class="linkliste_text"><?= $cat[$i]['description']; ?></div>
                             <?php endif; ?>
                         </div>
 
@@ -45,14 +41,3 @@
     </div>
 
 <?php endif; ?>
-
-<?php
-if ($this->favicon):
-    if ($this->mootools):
-        $GLOBALS['TL_JAVASCRIPT'][] = 'system/modules/delirius_linkliste/html/min/Mootools-External-Favicon-min.js|static';
-    else:
-        $GLOBALS['TL_JAVASCRIPT'][] = 'system/modules/delirius_linkliste/html/min/jquery-external-favicons-min.js|static';
-    endif;
-    $GLOBALS['TL_CSS'][] = 'system/modules/delirius_linkliste/html/favicon.css';
-endif;
-?>
