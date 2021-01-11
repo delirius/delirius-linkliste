@@ -18,12 +18,14 @@
                     <?php if ($cat[$i]['url'] != ''): ?>
                         <div class="linkliste_item<?= $cat[$i]['class']; ?>">
                             <?php if ($this->showimage && $cat[$i]['image']): ?>
-                                <a class="<?= $favicon_class; ?> image_link" href="<?= $cat[$i]['url']; ?>" <?= ($cat[$i]['title'] ? 'title="' . $cat[$i]['title'] . '"' : ''); ?> <?= ($cat[$i]['target'] ? LINK_NEW_WINDOW : LINK_BLUR); ?> >
+                                <a href="<?= $cat[$i]['url']; ?>" <?= ($cat[$i]['target'] ? LINK_NEW_WINDOW : LINK_BLUR); ?>>
+                                    <figure class="image_container">
                                         <?php if ($this->imagetype === 'picture'): ?>
                                             {{picture::<?= $cat[$i]['image']; ?>?<?= $this->imagesize; ?>&alt=<?= $cat[$i]['url_text']; ?>}}
                                         <?php else: ?>
                                             {{image::<?= $cat[$i]['image']; ?>?<?= $this->imagesize; ?>&alt=<?= $cat[$i]['url_text']; ?>}}
                                         <?php endif; ?>
+                                    </figure>
                                 </a>
                             <?php endif; ?>
                             <a href="<?= $cat[$i]['url']; ?>" <?= ($cat[$i]['target'] ? LINK_NEW_WINDOW : LINK_BLUR); ?>><?= $cat[$i]['url_text']; ?></a>
