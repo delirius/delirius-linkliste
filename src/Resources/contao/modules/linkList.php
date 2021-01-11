@@ -94,6 +94,10 @@ class linkList extends \Module
          if ($objParams->delirius_linkliste_standardfavicon != '')
          {
              $this->Template->standardimage = \StringUtil::binToUuid($objParams->delirius_linkliste_standardfavicon);
+
+             /* image_path */
+             $objFile = \FilesModel::findByUuid($objParams->delirius_linkliste_standardfavicon);
+             $standardimagePath = $objFile->path;
          }
 
         $arrLinks = array();
@@ -155,6 +159,17 @@ class linkList extends \Module
                 else
                 {
                     $arrNew['image'] = \StringUtil::binToUuid($objData->image);
+                }
+
+                /* image_path Kompatibilität */
+                if (strlen($objData->image) == 0)
+                {
+                    $arrNew['image_path'] = $standardimagePath;
+                }
+                else
+                {
+                    $objFile = \FilesModel::findByUuid($objData->image);
+                    $arrNew['image_path'] = $objFile->path;
                 }
             }
 
