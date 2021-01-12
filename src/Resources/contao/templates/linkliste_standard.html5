@@ -29,8 +29,11 @@
                                 </a>
                             <?php endif; ?>
                             <a href="<?= $cat[$i]['url']; ?>" <?= ($cat[$i]['target'] ? LINK_NEW_WINDOW : LINK_BLUR); ?>><?= $cat[$i]['url_text']; ?></a>
+                            <?php if ($cat[$i]['title'] != ''): ?>
+                                <strong><?= $cat[$i]['title']; ?></strong>
+                            <?php endif; ?>
                             <?php if ($cat[$i]['description'] != ''): ?>
-                                <div class="linkliste_text"><?= $cat[$i]['description']; ?></div>
+                                <div><?= $cat[$i]['description']; ?></div>
                             <?php endif; ?>
                         </div>
 
