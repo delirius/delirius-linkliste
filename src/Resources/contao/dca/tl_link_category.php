@@ -139,7 +139,7 @@ $GLOBALS['TL_DCA']['tl_link_category'] = array
             'label' => &$GLOBALS['TL_LANG']['tl_link_category']['title_publik'],
             'exclude' => true,
             'inputType' => 'text',
-            'eval' => array('mandatory' => true, 'maxlength' => 255),
+            'eval' => array('maxlength' => 255),
             'sql' => "varchar(255) NOT NULL default ''"
         ),
         'description' => array
