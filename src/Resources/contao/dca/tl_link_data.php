@@ -98,7 +98,7 @@ $GLOBALS['TL_DCA']['tl_link_data'] = array
     'palettes' => array
         (
         '__selector__' => array(''),
-        'default' => '{dataset_legend},published,url,target,url_text,url_title,description,image;'
+        'default' => '{dataset_legend},published,url,target,url_text,title,description,image;'
     ),
 // Subpalettes
     'subpalettes' => array
@@ -166,9 +166,9 @@ $GLOBALS['TL_DCA']['tl_link_data'] = array
             'eval' => array('mandatory' => false, 'maxlength' => 255, 'tl_class' => 'clr w50'),
             'sql' => "varchar(255) NOT NULL default ''"
         ),
-        'url_title' => array
+        'title' => array
             (
-            'label' => &$GLOBALS['TL_LANG']['tl_link_data']['url_title'],
+            'label' => &$GLOBALS['TL_LANG']['tl_link_data']['title'],
             'exclude' => true,
             'sorting' => true,
             'search' => true,
@@ -190,7 +190,7 @@ $GLOBALS['TL_DCA']['tl_link_data'] = array
             'exclude' => true,
             'search' => true,
             'inputType' => 'textarea',
-            'eval' => array('style' => 'height:48px', 'tl_class' => 'clr'),
+            'eval' => array('style' => 'height:48px', 'tl_class' => 'clr', 'rte' => 'tinyMCE'),
             'sql' => "text NULL"
         ),
         'image' => array
