@@ -179,11 +179,13 @@ class class_link_cat extends Backend
             }
         }
 
-        if ($row['title'])
+        if ($row['title_publik'])
         {
             $text = '<span class="name">' . $row['title'] . '</span>';
+            $text .= ' <span class="name"><strong>' . $row['title_publik'] . '</strong></span>';
+        } else {
+            $text = '<span class="name"><strong>' . $row['title'] . '</strong></span>';
         }
-
         $objData = \Database::getInstance()->prepare('SELECT COUNT(id) as cc FROM tl_link_data WHERE pid = ?')->execute($row['id']);
         if ($objData->cc > 0)
         {
