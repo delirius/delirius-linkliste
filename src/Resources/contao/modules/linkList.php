@@ -102,7 +102,7 @@ class linkList extends \Module
 
         $arrLinks = array();
 
-        $query = ' SELECT a.*, b.title AS categorietitle, b.description AS categoriedescription, b.image AS categorieimage FROM tl_link_data a, tl_link_category b WHERE a.pid=b.id AND b.id IN (' . $strAnd . ') AND b.published = "1" AND a.published = "1" ORDER BY FIELD(b.id,' . $strAnd . '),' . $strOrder;
+        $query = ' SELECT a.*, b.title AS categorietitle, b.title_publik AS categorietitlepublik, b.description AS categoriedescription, b.image AS categorieimage FROM tl_link_data a, tl_link_category b WHERE a.pid=b.id AND b.id IN (' . $strAnd . ') AND b.published = "1" AND a.published = "1" ORDER BY FIELD(b.id,' . $strAnd . '),' . $strOrder;
         $objData = \Database::getInstance()->execute($query);
 
         $query_cc = ' SELECT a.pid, COUNT(a.id) as cc FROM tl_link_data a, tl_link_category b WHERE a.pid=b.id AND b.id IN (' . $strAnd . ') AND b.published = "1" AND a.published = "1" GROUP BY a.pid';
@@ -129,11 +129,14 @@ class linkList extends \Module
             {
                 $objData->url = $this->replaceInsertTags($objData->url);
             }
+            /* title_publik */
+            $ktitle = trim( ($objData->categorietitlepublik ? $objData->categorietitlepublik : $objData->categorietitle) );
+
 
             $arrNew = array
                 (
                 'class' => $class,
-                'categorietitle' => trim($objData->categorietitle),
+                'categorietitle' => $ktitle,
                 'categoriedescription' => trim($objData->categoriedescription),
                 'categorieimage' => trim($objData->categorieimage),
                 'categoriecount' => $countcat,
