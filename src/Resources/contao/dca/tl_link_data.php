@@ -439,9 +439,16 @@ class class_link_dat extends Backend
 
         if ($arrRow['description'])
         {
-            $start = 0;
-            $laenge = 40;
-            $desc = preg_replace("/[^ ]*$/", '', substr($this->headline, $start, $laenge));
+            $slen = 120;
+            if ( strlen($arrRow['description']) >= $slen)
+            {
+                $out = substr($arrRow['description'], 0, $slen);
+                $arrWords = preg_split('/[\s]+/', $out,-1,PREG_SPLIT_NO_EMPTY);
+                array_pop($arrWords);
+                $desc = implode(' ', $arrWords) . ' …';
+            } else {
+                $desc = $arrRow['description'];
+            }
         }
 
 
