@@ -8,7 +8,7 @@ $GLOBALS['TL_LANG']['tl_link_data']['url_protocol'] = array('Protocol (https://)
 $GLOBALS['TL_LANG']['tl_link_data']['url'] = array('Link', '');
 $GLOBALS['TL_LANG']['tl_link_data']['target'] = array('Open in new window', '');
 $GLOBALS['TL_LANG']['tl_link_data']['url_text'] = array('Link text', '');
-$GLOBALS['TL_LANG']['tl_link_data']['title'] = array('Title', '');
+$GLOBALS['TL_LANG']['tl_link_data']['url_title'] = array('Title', '');
 $GLOBALS['TL_LANG']['tl_link_data']['description'] = array('Description', '');
 $GLOBALS['TL_LANG']['tl_link_data']['image'] = array('Image', '');
 

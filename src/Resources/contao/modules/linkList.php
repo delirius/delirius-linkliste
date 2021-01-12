@@ -41,7 +41,7 @@ class linkList extends \Module
             $strOrder = ' b.sorting, a.sorting';
         } elseif ($objParams->delirius_linkliste_fesort == 'title')
         {
-            $strOrder = ' b.sorting, a.title';
+            $strOrder = ' b.sorting, a.url_title';
         } else
         {
             $strOrder = ' b.sorting, a.url';
@@ -141,7 +141,7 @@ class linkList extends \Module
                 'url' => trim($objData->url),
                 'target' => trim($objData->target),
                 'url_text' => trim($objData->url_text),
-                'title' => trim($objData->title),
+                'title' => trim($objData->url_title),
                 'description' => trim($objData->description),
             );
             if (strlen($arrNew['url_text']) == '')
