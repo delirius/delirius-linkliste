@@ -91,7 +91,7 @@ $GLOBALS['TL_DCA']['tl_link_category'] = array
     'palettes' => array
         (
         '__selector__' => array(''),
-        'default' => '{category_legend},published,title,description,image'
+        'default' => '{category_legend},published,title,title_publik,description,image'
     ),
 // Subpalettes
     'subpalettes' => array
@@ -129,6 +129,14 @@ $GLOBALS['TL_DCA']['tl_link_category'] = array
         'title' => array
             (
             'label' => &$GLOBALS['TL_LANG']['tl_link_category']['title'],
+            'exclude' => true,
+            'inputType' => 'text',
+            'eval' => array('mandatory' => true, 'maxlength' => 255),
+            'sql' => "varchar(255) NOT NULL default ''"
+        ),
+        'title_publik' => array
+            (
+            'label' => &$GLOBALS['TL_LANG']['tl_link_category']['title_publik'],
             'exclude' => true,
             'inputType' => 'text',
             'eval' => array('mandatory' => true, 'maxlength' => 255),
