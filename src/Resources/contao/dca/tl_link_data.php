@@ -367,9 +367,9 @@ class class_link_dat extends Backend
         {
             \Database::getInstance()->prepare("UPDATE tl_link_data SET be_warning = 1 WHERE id=?")->execute($linkliste_id);
             if ($objRequest->code == 301) {
-                $error = 'Moved Permanently';
+                $error = '301 Moved Permanently';
             } elseif ($objRequest->code == 302) {
-                $error = 'Found (with redirect)';
+                $error = '302 Found (with redirect)';
         } else {
                 $error = $objRequest->error;
             }
@@ -437,13 +437,21 @@ class class_link_dat extends Backend
             $arrRow['url'] = $this->replaceInsertTags($arrRow['url']);
         }
 
+        if ($arrRow['description'])
+        {
+            $start = 0;
+            $laenge = 40;
+            $desc = preg_replace("/[^ ]*$/", '', substr($this->headline, $start, $laenge));
+        }
+
+
         $line = '';
         $line .= '<div>';
         $line .= $image;
         $line .= '<a href="' . $arrRow['url'] . '" title="' . $arrRow['url'] . '"' . LINK_NEW_WINDOW . '>' . ($arrRow['url_text'] != '' ? $arrRow['url_text'] : $arrRow['url']) . '</a>' . $warning . $error;
         $line .= "</div>";
         $line .= "<div>";
-        $line .= $arrRow['description'];
+        $line .= $desc;
         $line .= "</div>";
 
         $line .= "\n";

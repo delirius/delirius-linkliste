@@ -3,7 +3,7 @@
 /**
  * Fields
  */
-$GLOBALS['TL_LANG']['tl_link_category']['title'] = array('Title internal', '');
+$GLOBALS['TL_LANG']['tl_link_category']['title'] = array('Title internal', '(Footer 01, Footer 02, etc.) Title internal is used for the display and order in the backend.');
 $GLOBALS['TL_LANG']['tl_link_category']['title_publik'] = array('Title', '');
 $GLOBALS['TL_LANG']['tl_link_category']['published'] = array('Published', '');
 $GLOBALS['TL_LANG']['tl_link_category']['description'] = array('Description', '');
