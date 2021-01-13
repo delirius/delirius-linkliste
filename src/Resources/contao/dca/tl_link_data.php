@@ -458,6 +458,9 @@ class class_link_dat extends Backend
         $line .= '<a href="' . $arrRow['url'] . '" title="' . $arrRow['url'] . '"' . LINK_NEW_WINDOW . '>' . ($arrRow['url_text'] != '' ? $arrRow['url_text'] : $arrRow['url']) . '</a>' . $warning . $error;
         $line .= "</div>";
         $line .= "<div>";
+        if ($arrRow['url_title']) {
+            $line .= $arrRow['url_title'].'<br>';
+        }
         $line .= $desc;
         $line .= "</div>";
 
