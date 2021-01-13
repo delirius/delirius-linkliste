@@ -30,7 +30,7 @@
                             <?php endif; ?>
                             <a href="<?= $cat[$i]['url']; ?>" <?= ($cat[$i]['target'] ? LINK_NEW_WINDOW : LINK_BLUR); ?>><?= $cat[$i]['url_text']; ?></a>
                             <?php if ($cat[$i]['title'] != ''): ?>
-                                <strong><?= $cat[$i]['title']; ?></strong>
+                                <div><strong><?= $cat[$i]['title']; ?></strong></div>
                             <?php endif; ?>
                             <?php if ($cat[$i]['description'] != ''): ?>
                                 <div><?= $cat[$i]['description']; ?></div>
