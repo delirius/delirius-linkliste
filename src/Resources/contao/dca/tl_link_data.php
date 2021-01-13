@@ -442,10 +442,7 @@ class class_link_dat extends Backend
             $slen = 120;
             if ( strlen($arrRow['description']) >= $slen)
             {
-                $out = substr($arrRow['description'], 0, $slen);
-                $arrWords = preg_split('/[\s]+/', $out,-1,PREG_SPLIT_NO_EMPTY);
-                array_pop($arrWords);
-                $desc = implode(' ', $arrWords) . ' …';
+                $desc = \StringUtil::substr($arrRow['description'],$slen);
             } else {
                 $desc = $arrRow['description'];
             }
@@ -459,7 +456,7 @@ class class_link_dat extends Backend
         $line .= "</div>";
         $line .= "<div>";
         if ($arrRow['url_title']) {
-            $line .= $arrRow['url_title'].'<br>';
+            $line .= '<strong>'.$arrRow['url_title'].'</strong><br>';
         }
         $line .= $desc;
         $line .= "</div>";
