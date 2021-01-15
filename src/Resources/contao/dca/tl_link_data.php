@@ -395,6 +395,8 @@ class class_link_dat extends Backend
                 } else {
                     $betext = 'Duplicate entrys ';
                 }
+                $betext = $objData->be_text.', Duplicate entrys ';
+
                 \Database::getInstance()->prepare("UPDATE tl_link_data SET be_warning = 1 , be_text = ? WHERE id=?")->execute($betext, $objData->id);
             }
         }
