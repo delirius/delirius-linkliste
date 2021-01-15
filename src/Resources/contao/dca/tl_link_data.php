@@ -370,6 +370,8 @@ class class_link_dat extends Backend
                 $error = 'Moved Permanently';
             } elseif ($objRequest->code == 302) {
                 $error = 'Found (with redirect)';
+            } elseif ($objRequest->code == 307) {
+            $error = 'Temporary Redirect';
         } else {
                 $error = $objRequest->error;
             }
