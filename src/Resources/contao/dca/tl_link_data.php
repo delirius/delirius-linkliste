@@ -280,8 +280,9 @@ class class_link_dat extends Backend
 
         if ($linkliste_url == '')
         {
-            $objData = \Database::getInstance()->prepare("SELECT url FROM tl_link_data WHERE id = ?")->execute($linkliste_id);
+            $objData = \Database::getInstance()->prepare("SELECT pid,url FROM tl_link_data WHERE id = ?")->execute($linkliste_id);
             $linkliste_url = $objData->url;
+            $linkliste_pid = $objData->pid;
         }
         if ($linkliste_url == '')
         {
@@ -384,7 +385,7 @@ class class_link_dat extends Backend
         }
 
         /* duplicates */
-        $objData = \Database::getInstance()->prepare("SELECT id,be_text FROM tl_link_data WHERE url LIKE ?")->execute('%%' . $linkliste_url . '%%');
+        $objData = \Database::getInstance()->prepare("SELECT id,be_text FROM tl_link_data WHERE pid = ? AND url LIKE ?")->execute($linkliste_pid, '%%' . $linkliste_url . '%%');
         if ($objData->numRows > 1)
         {
             while ($objData->next())
