@@ -280,14 +280,17 @@ class class_link_dat extends Backend
 
         if ($linkliste_url == '')
         {
-            $objData = \Database::getInstance()->prepare("SELECT pid,url FROM tl_link_data WHERE id = ?")->execute($linkliste_id);
+            $objData = \Database::getInstance()->prepare("SELECT url FROM tl_link_data WHERE id = ?")->execute($linkliste_id);
             $linkliste_url = $objData->url;
-            $linkliste_pid = $objData->pid;
         }
         if ($linkliste_url == '')
         {
             return false;
         }
+
+        $objDataPid = \Database::getInstance()->prepare("SELECT pid FROM tl_link_data WHERE id = ?")->execute($linkliste_id);
+        $linkliste_pid = $objDataPid->pid;
+
         \Database::getInstance()->prepare("UPDATE tl_link_data SET be_error = 0, be_warning = 0, be_text = '' WHERE id = ?")->execute($linkliste_id);
 
         $linkliste_url = html_entity_decode($linkliste_url); // Anchor
