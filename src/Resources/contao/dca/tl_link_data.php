@@ -367,9 +367,9 @@ class class_link_dat extends Backend
         {
             \Database::getInstance()->prepare("UPDATE tl_link_data SET be_warning = 1 WHERE id=?")->execute($linkliste_id);
             if ($objRequest->code == 301) {
-                $error = '301 Moved Permanently';
+                $error = 'Moved Permanently';
             } elseif ($objRequest->code == 302) {
-                $error = '302 Found (with redirect)';
+                $error = 'Found (with redirect)';
         } else {
                 $error = $objRequest->error;
             }
