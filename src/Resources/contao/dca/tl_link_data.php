@@ -390,7 +390,12 @@ class class_link_dat extends Backend
         {
             while ($objData->next())
             {
-                \Database::getInstance()->prepare("UPDATE tl_link_data SET be_warning = 1 , be_text = ? WHERE id=?")->execute('Duplicate entrys ', $objData->id);
+                if ($objData->be_text != '' && $objData->be_text != '200') {
+                    $betext = $objData->be_text.', Duplicate entrys ';
+                } else {
+                    $betext = 'Duplicate entrys ';
+                }
+                \Database::getInstance()->prepare("UPDATE tl_link_data SET be_warning = 1 , be_text = ? WHERE id=?")->execute($betext, $objData->id);
             }
         }
     } // end link intern/extern
