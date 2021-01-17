@@ -4,8 +4,6 @@
         <div><?= '$this->showimage: '.$this->showimage; ?></div>
         <div><?= '$this->imagetype: '.$this->imagetype; ?></div>
         <div><?= '$this->imagesize: '.$this->imagesize; ?></div>
-        <div>{{image::<?= $cat[$i]['image_path']; ?>?<?= $this->imagesize; ?>&alt=<?= $cat[$i]['url_text']; ?>}}</div>
-        <div>{{picture::<?= $cat[$i]['image_path']; ?>?<?= $this->imagesize; ?>&alt=<?= $cat[$i]['url_text']; ?>}}</div>
         <hr>
         <?php foreach ($this->linkliste as $cat): ?>
 
@@ -26,6 +24,13 @@
                         <div><?= 'target: '.$cat[$i]['target']; ?></div>
                         <div><?= 'image: '.$cat[$i]['image']; ?></div>
                         <div><?= 'image_path: '.$cat[$i]['image_path']; ?></div>
+                        <div><?= 'Inserttag with image_path: '; ?>
+                            <?php if ($this->imagetype == 'picture'): ?>
+                                <div>{{picture::<?= $cat[$i]['image_path']; ?>?<?= $this->imagesize; ?>&alt=<?= $cat[$i]['url_text']; ?>}}</div>
+                            <?php else: ?>
+                                <div>{{image::<?= $cat[$i]['image_path']; ?>?<?= $this->imagesize; ?>&alt=<?= $cat[$i]['url_text']; ?>}}</div>
+                            <?php endif; ?>
+                        </div>
                         <div><?= 'url_text: '.$cat[$i]['url_text']; ?></div>
                         <div><?= 'title: '.$cat[$i]['title']; ?></div>
                         <div><?= 'description: '.$cat[$i]['description']; ?></div>
