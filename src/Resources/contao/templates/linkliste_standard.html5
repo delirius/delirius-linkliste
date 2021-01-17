@@ -18,31 +18,26 @@
                     <?php if ($cat[$i]['url'] != ''): ?>
                         <div class="linkliste_item<?= $cat[$i]['class']; ?>">
                             <?php if ($this->showimage && $cat[$i]['image']): ?>
-                                <a href="<?= $cat[$i]['url']; ?>" <?= ($cat[$i]['target'] ? LINK_NEW_WINDOW : LINK_BLUR); ?>>
-                                    <figure class="image_container">
-                                        <?php if ($this->imagetype === 'picture'): ?>
-                                            {{picture::<?= $cat[$i]['image']; ?>?<?= $this->imagesize; ?>&alt=<?= $cat[$i]['url_text']; ?>}}
-                                        <?php else: ?>
-                                            {{image::<?= $cat[$i]['image']; ?>?<?= $this->imagesize; ?>&alt=<?= $cat[$i]['url_text']; ?>}}
-                                        <?php endif; ?>
-                                    </figure>
-                                </a>
+                                <figure class="image_container">
+                                    <?= $cat[$i]['image']; ?>
+                                </figure>
                             <?php endif; ?>
-                            <a href="<?= $cat[$i]['url']; ?>" <?= ($cat[$i]['target'] ? LINK_NEW_WINDOW : LINK_BLUR); ?>><?= $cat[$i]['url_text']; ?></a>
+                            <?= $cat[$i]['url_text']; ?>
                             <?php if ($cat[$i]['title'] != ''): ?>
                                 <div><strong><?= $cat[$i]['title']; ?></strong></div>
                             <?php endif; ?>
                             <?php if ($cat[$i]['description'] != ''): ?>
                                 <div><?= $cat[$i]['description']; ?></div>
                             <?php endif; ?>
-                        </div>
+                        </a>
+                    </div>
 
-                    <?php endif; ?>
+                <?php endif; ?>
 
-                <?php endfor; ?>
-            </div>
+            <?php endfor; ?>
+        </div>
 
-        <?php endforeach; ?>
-    </div>
+    <?php endforeach; ?>
+</div>
 
 <?php endif; ?>

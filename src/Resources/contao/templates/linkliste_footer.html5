@@ -16,11 +16,7 @@
                             <a href="<?= $cat[$i]['url']; ?>" <?= ($cat[$i]['target'] ? LINK_NEW_WINDOW : LINK_BLUR); ?>>
                                 <?php if ($this->showimage && $cat[$i]['image']): ?>
                                     <figure class="image_container">
-                                        <?php if ($this->imagetype === 'picture'): ?>
-                                            {{picture::<?= $cat[$i]['image']; ?>?<?= $this->imagesize; ?>&alt=<?= $cat[$i]['url_text']; ?>}}
-                                        <?php else: ?>
-                                            {{image::<?= $cat[$i]['image']; ?>?<?= $this->imagesize; ?>&alt=<?= $cat[$i]['url_text']; ?>}}
-                                        <?php endif; ?>
+                                        <?= $cat[$i]['image']; ?>
                                     </figure>
                                 <?php endif; ?>
                                 <?= $cat[$i]['url_text']; ?>

@@ -157,11 +157,21 @@ class linkList extends \Module
             {
                 if (strlen($objData->image) == 0)
                 {
-                    $arrNew['image'] = $this->Template->standardimage;
+                    $objData->image = ($this->Template->standardimage ? $this->Template->standardimage : '');
                 }
-                else
+
+                $arrNew['image'] = \StringUtil::binToUuid($objData->image);
+                if ($this->Template->imagetype === 'picture')
+                 {
+                     $arrNew['image'] = '{{picture::'.$objData->image.'?'.$this->Template->imagesize.'&alt='.$arrNew['url_text'].'}}';
+                 }
+                 else
+                 {
+                     $arrNew['image'] = '{{image::'.$objData->image.'?'.$this->Template->imagesize.'&alt='.$arrNew['url_text'].'}}';
+                 }
+                 if (\defined('TL_MODE') && TL_MODE == 'BE')
                 {
-                    $arrNew['image'] = \StringUtil::binToUuid($objData->image);
+                    $arrNew['image'] = \Controller::replaceInsertTags('{{image::'.$objData->image.'?width=70&height=70&mode=proportional&alt='.$arrNew['url_text'].'}}');
                 }
 
                 /* image_path Kompatibilität */
