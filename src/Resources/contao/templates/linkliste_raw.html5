@@ -1,54 +1,50 @@
-<?php
-if (true):
-echo '<pre>';
-print_r($this->linkliste);
-echo '</pre>';
-exit;
-endif;
-?>
 <?php if (count($this->linkliste) > 0): ?>
 
     <div class="linkliste_extended">
+        <div><?= '$this->showimage: '.$this->showimage; ?></div>
+
         <?php foreach ($this->linkliste as $cat): ?>
 
-                <div class="linkliste_categorie">
-                    <div><?= 'categorietitle: '.$cat[0]['categorietitle']; ?></div>
-                    <div><?= 'categoriecount: '.$cat[0]['categoriecount']; ?></div>
-                    <div><?= 'categoriedescription: '.$cat[0]['categoriedescription']; ?></div>
-                    <div><?= 'categorieimage: '.$cat[0]['categorieimage']; ?></div>
-                    <div>{{image::<?= $cat[0]['categorieimage']; ?>?width=240&height=240&mode=proportional&alt=<?= $cat[0]['categorietitle']; ?>}}</div>
-                </div>
+            <div class="linkliste_categorie">
+                <div><?= 'categorietitle: '.$cat[0]['categorietitle']; ?></div>
+                <div><?= 'categoriecount: '.$cat[0]['categoriecount']; ?></div>
+                <div><?= 'categoriedescription: '.$cat[0]['categoriedescription']; ?></div>
+                <div><?= 'categorieimage: '.$cat[0]['categorieimage']; ?></div>
+                <div>{{image::<?= $cat[0]['categorieimage']; ?>?width=240&height=240&mode=proportional&alt=<?= $cat[0]['categorietitle']; ?>}}</div>
+            </div>
+            <div class="linkliste_entries">
                 <?php $cc = count($cat); ?>
                 <?php for ($i = 0; $i < $cc; $i++): ?>
                     <div class="linkliste_item<?= $cat[$i]['class']; ?>">
-                        <a href="<?= $cat[$i]['url']; ?>" <?= ($cat[$i]['target'] ? LINK_NEW_WINDOW : LINK_BLUR); ?>>
 
-                            <div><?= 'class: '.$cat[$i]['class']; ?></div>
-                            <div><?= 'url: '.$cat[$i]['url']; ?></div>
+                        <div><?= 'class: '.$cat[$i]['class']; ?></div>
+                        <div><?= 'url: '.$cat[$i]['url']; ?></div>
                         <div><?= 'target: '.$cat[$i]['target']; ?></div>
+                        <div><?= 'image: '.$cat[$i]['image']; ?></div>
+                        <div><?= 'image_path: '.$cat[$i]['image_path']; ?></div>
+                        <div><?= 'url_text: '.$cat[$i]['url_text']; ?></div>
+                        <div><?= 'title: '.$cat[$i]['title']; ?></div>
+                        <div><?= 'description: '.$cat[$i]['description']; ?></div>
 
-                    <?php if ($cat[$i]['url'] != ''): ?>
-                        <div class="linkliste_item<?= $cat[$i]['class']; ?>">
-                            <a href="<?= $cat[$i]['url']; ?>" <?= ($cat[$i]['target'] ? LINK_NEW_WINDOW : LINK_BLUR); ?>>
-                                <?php if ($this->showimage && $cat[$i]['image']): ?>
-                                    <figure class="image_container">
-                                        <?= $cat[$i]['image']; ?>
-                                    </figure>
-                                    <div><strong>image_path:</strong><?= $cat[$i]['image_path']; ?></div>
-                                <?php endif; ?>
-                                <?= $cat[$i]['url_text']; ?>
-                                <?php if ($cat[$i]['title'] != ''): ?>
-                                    <div><strong><?= $cat[$i]['title']; ?></strong></div>
-                                <?php endif; ?>
-                                <?php if ($cat[$i]['description'] != ''): ?>
-                                    <div><?= $cat[$i]['description']; ?></div>
-                                <?php endif; ?>
-                            </a>
-                        </div>
-                    <?php endif; ?>
+                        <a href="<?= $cat[$i]['url']; ?>" <?= ($cat[$i]['target'] ? LINK_NEW_WINDOW : LINK_BLUR); ?>>
+                            <?php if ($this->showimage && $cat[$i]['image']): ?>
+                                <figure class="image_container">
+                                    <?= $cat[$i]['image']; ?>
+                                </figure>
+                            <?php endif; ?>
+                            <?= $cat[$i]['url_text']; ?>
+                            <?php if ($cat[$i]['title'] != ''): ?>
+                                <div><strong><?= $cat[$i]['title']; ?></strong></div>
+                            <?php endif; ?>
+                            <?php if ($cat[$i]['description'] != ''): ?>
+                                <div><?= $cat[$i]['description']; ?></div>
+                            <?php endif; ?>
+                        </a>
+                    </div>
                 <?php endfor; ?>
+            </div>
 
-    <?php endforeach; ?>
-</div>
+        <?php endforeach; ?>
+    </div>
 
 <?php endif; ?>
