@@ -1,20 +1,32 @@
+<?php
+if (true):
+echo '<pre>';
+print_r($this->linkliste);
+echo '</pre>';
+exit;
+endif;
+?>
 <?php if (count($this->linkliste) > 0): ?>
 
     <div class="linkliste_extended">
         <?php foreach ($this->linkliste as $cat): ?>
 
-            <div class="linkliste_wrapper">
                 <div class="linkliste_categorie">
-                    <h3><?= $cat[0]['categorietitle']; ?> (<?= $cat[0]['categoriecount']; ?>)</h3>
-                    <?php if ($cat[0]['categoriedescription']): ?>
-                        <div class="linkliste_categorietext"><?= $cat[0]['categoriedescription']; ?></div>
-                    <?php endif; ?>
-                    <?php if ($cat[0]['categorieimage']): ?>
-                        {{image::<?= $cat[0]['categorieimage']; ?>?width=240&height=240&mode=proportional&alt=<?= $cat[0]['categorietitle']; ?>}}
-                    <?php endif; ?>
+                    <div><?= 'categorietitle: '.$cat[0]['categorietitle']; ?></div>
+                    <div><?= 'categoriecount: '.$cat[0]['categoriecount']; ?></div>
+                    <div><?= 'categoriedescription: '.$cat[0]['categoriedescription']; ?></div>
+                    <div><?= 'categorieimage: '.$cat[0]['categorieimage']; ?></div>
+                    <div>{{image::<?= $cat[0]['categorieimage']; ?>?width=240&height=240&mode=proportional&alt=<?= $cat[0]['categorietitle']; ?>}}</div>
                 </div>
                 <?php $cc = count($cat); ?>
                 <?php for ($i = 0; $i < $cc; $i++): ?>
+                    <div class="linkliste_item<?= $cat[$i]['class']; ?>">
+                        <a href="<?= $cat[$i]['url']; ?>" <?= ($cat[$i]['target'] ? LINK_NEW_WINDOW : LINK_BLUR); ?>>
+
+                            <div><?= 'class: '.$cat[$i]['class']; ?></div>
+                            <div><?= 'url: '.$cat[$i]['url']; ?></div>
+                        <div><?= 'target: '.$cat[$i]['target']; ?></div>
+
                     <?php if ($cat[$i]['url'] != ''): ?>
                         <div class="linkliste_item<?= $cat[$i]['class']; ?>">
                             <a href="<?= $cat[$i]['url']; ?>" <?= ($cat[$i]['target'] ? LINK_NEW_WINDOW : LINK_BLUR); ?>>
@@ -35,9 +47,8 @@
                         </div>
                     <?php endif; ?>
                 <?php endfor; ?>
-            </div>
 
-        <?php endforeach; ?>
-    </div>
+    <?php endforeach; ?>
+</div>
 
 <?php endif; ?>
