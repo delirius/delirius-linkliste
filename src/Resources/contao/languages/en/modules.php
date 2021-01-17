@@ -25,7 +25,8 @@ $GLOBALS['TL_LANG']['tl_module']['delirius_linkliste_imagesize'] = array('Images
 
 $GLOBALS['TL_LANG']['tl_module']['fesort_option']['random'] = 'Random order';
 $GLOBALS['TL_LANG']['tl_module']['fesort_option']['order'] = 'Manually order (as backend)';
-$GLOBALS['TL_LANG']['tl_module']['fesort_option']['title'] = 'Alphabetically by link text';
+$GLOBALS['TL_LANG']['tl_module']['fesort_option']['text'] = 'Alphabetically by link text';
+$GLOBALS['TL_LANG']['tl_module']['fesort_option']['title'] = 'Alphabetically by title';
 $GLOBALS['TL_LANG']['tl_module']['fesort_option']['url'] = 'Alphabetically by link';
 
 

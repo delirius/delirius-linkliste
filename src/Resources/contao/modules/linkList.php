@@ -36,13 +36,20 @@ class linkList extends \Module
         if ($objParams->delirius_linkliste_fesort == 'random')
         {
             $strOrder = ' b.sorting, RAND()';
-        } elseif ($objParams->delirius_linkliste_fesort == 'order')
+        }
+        elseif ($objParams->delirius_linkliste_fesort == 'order')
         {
             $strOrder = ' b.sorting, a.sorting';
-        } elseif ($objParams->delirius_linkliste_fesort == 'title')
+        }
+        elseif ($objParams->delirius_linkliste_fesort == 'text')
+        {
+            $strOrder = ' b.sorting, a.url_text';
+        }
+        elseif ($objParams->delirius_linkliste_fesort == 'title')
         {
             $strOrder = ' b.sorting, a.url_title';
-        } else
+        }
+        else
         {
             $strOrder = ' b.sorting, a.url';
         }

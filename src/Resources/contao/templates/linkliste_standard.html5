@@ -21,7 +21,7 @@
                                 <figure class="image_container">
                                     <?= $cat[$i]['image']; ?>
                                 </figure>
-                                <strong>image_path:</strong><?= $cat[$i]['image_path']; ?>
+                                <div><strong>image_path:</strong><?= $cat[$i]['image_path']; ?></div>
                             <?php endif; ?>
                             <?= $cat[$i]['url_text']; ?>
                             <?php if ($cat[$i]['title'] != ''): ?>
