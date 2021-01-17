@@ -152,6 +152,8 @@ class linkList extends \Module
             /* Image */
             if ($objParams->delirius_linkliste_showimage)
             {
+                $objFile = \FilesModel::findByUuid($objData->image);
+
                 if (strlen($objData->image) == 0)
                 {
                     $objData->image = ($objParams->delirius_linkliste_standardfavicon ? $objParams->delirius_linkliste_standardfavicon : '');
@@ -159,22 +161,20 @@ class linkList extends \Module
 
                 if ($this->Template->imagetype === 'picture')
                 {
-                    $arrNew['image'] = '{{picture::'.$objData->image.'?'.$this->Template->imagesize.'&alt='.$arrNew['url_text'].'}}';
+                    $arrNew['image'] = '{{picture::'.$objFile->path.'?'.$this->Template->imagesize.'&alt='.$arrNew['url_text'].'}}';
                 }
                 else
                 {
-                    $arrNew['image'] = '{{image::'.$objData->image.'?'.$this->Template->imagesize.'&alt='.$arrNew['url_text'].'}}';
+                    $arrNew['image'] = '{{image::'.$objFile->path.'?'.$this->Template->imagesize.'&alt='.$arrNew['url_text'].'}}';
                 }
                 if (\defined('TL_MODE') && TL_MODE == 'BE')
                 {
-                    $arrNew['image'] = \Controller::replaceInsertTags('{{image::'.$objData->image.'?width=70&height=70&mode=proportional&alt='.$arrNew['url_text'].'}}');
+                    $arrNew['image'] = \Controller::replaceInsertTags('{{image::'.$objFile->path.'?width=70&height=70&mode=proportional&alt='.$arrNew['url_text'].'}}');
                 }
 
-                /* image_path Kompatibilität */
-                $objFile = \FilesModel::findByUuid($objData->image);
+                /* image_path */
                 $arrNew['image_path'] = $objFile->path;
             }
-
 
             $arrNew['categorieimage'] = '';
             /*delirius_linkliste_showcategoryimage,delirius_linkliste_categoryimagesize,delirius_linkliste_categorystandardimage*/
