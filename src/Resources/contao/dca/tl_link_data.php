@@ -428,14 +428,16 @@ class class_link_dat extends Backend
 
         if ($arrRow['image'])
         {
-            $objFile = \FilesModel::findById($arrRow['image']);
-
+            $objFile = \FilesModel::findByUuid($arrRow['image']);
+            $image = '':
             if ($objFile !== null)
             {
-                $preview = $objFile->path;
-                $image = '<img src="' . $this->getImage($preview, 65, 45, 'center_center') . '" alt="' . htmlspecialchars($label) . '" style="display: inline-block;vertical-align: top;*display:inline;zoom:1;padding-right:8px;" />';
+                $image .= '<div class="float_left" style="margin-right:10px;">';
+                $image .= '<img src="' . \Image::get($objFile->path, 70, 70, 'proportional') . '">';
+                $image .= '</div>';
             }
         }
+
 
 
         $query = ' SELECT * FROM tl_link_data WHERE id = ? ';

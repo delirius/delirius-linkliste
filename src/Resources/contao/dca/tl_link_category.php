@@ -170,11 +170,11 @@ class class_link_cat extends Backend
     {
         if ($row['image'])
         {
-            $objFile = \FilesModel::findById($row['image']);
-
+            $objFile = \FilesModel::findByUuid($row['image']);
+            $image = '':
             if ($objFile !== null)
             {
-                $image = '<div class="float_left" style="margin-right:10px;">';
+                $image .= '<div class="float_left" style="margin-right:10px;">';
                 $image .= '<img src="' . \Image::get($objFile->path, 70, 70, 'proportional') . '">';
                 $image .= '</div>';
             }
