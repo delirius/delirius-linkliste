@@ -429,7 +429,7 @@ class class_link_dat extends Backend
         if ($arrRow['image'])
         {
             $objFile = \FilesModel::findByUuid($arrRow['image']);
-            $image = '':
+            $image = '';
             if ($objFile !== null)
             {
                 $image .= '<div class="float_left" style="margin-right:10px;">';

@@ -171,7 +171,7 @@ class class_link_cat extends Backend
         if ($row['image'])
         {
             $objFile = \FilesModel::findByUuid($row['image']);
-            $image = '':
+            $image = '';
             if ($objFile !== null)
             {
                 $image .= '<div class="float_left" style="margin-right:10px;">';
