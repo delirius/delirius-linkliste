@@ -25,7 +25,7 @@ $GLOBALS['TL_LANG']['tl_module']['delirius_linkliste_imagesize'] = array('Bildgr
 
 $GLOBALS['TL_LANG']['tl_module']['fesort_option']['random'] = 'Reihenfolge zufällig';
 $GLOBALS['TL_LANG']['tl_module']['fesort_option']['order'] = 'Reihenfolge manuell (wie Backend)';
-$GLOBALS['TL_LANG']['tl_module']['fesort_option']['title'] = 'Reihenfolge alphabetisch nach Link-Titel';
+$GLOBALS['TL_LANG']['tl_module']['fesort_option']['title'] = 'Reihenfolge alphabetisch nach Link-Text';
 $GLOBALS['TL_LANG']['tl_module']['fesort_option']['url'] = 'Reihenfolge alphabetisch nach Link';
 
 
