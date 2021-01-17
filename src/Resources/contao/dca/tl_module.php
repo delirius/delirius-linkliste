@@ -48,7 +48,6 @@ $GLOBALS['TL_DCA']['tl_module']['fields']['delirius_linkliste_showimage'] = arra
     'label' => &$GLOBALS['TL_LANG']['tl_module']['delirius_linkliste_showimage'],
     'exclude' => true,
     'inputType' => 'checkbox',
-    'default' => '1',
     'eval' => array('mandatory' => false, 'tl_class' => 'clr'),
     'sql' => "char(1) NOT NULL default ''"
 );
