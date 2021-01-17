@@ -162,6 +162,8 @@ class linkList extends \Module
                 else
                 {
                     $arrNew['image'] = \StringUtil::binToUuid($objData->image);
+
+                    $arrNew['image'] = \Image::getHtml($objData->image, '', 'class="undo"');
                 }
 
                 /* image_path Kompatibilität */
