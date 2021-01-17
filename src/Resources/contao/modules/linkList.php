@@ -71,6 +71,7 @@ class linkList extends \Module
         {
             // {{image::58ca4a90?width=200&height=150&mode=center_center&alt=alt}}
             $arrSizeText = array();
+            $this->Template->imagetype = 'image';
             if ($arrSize[0] > 0) {
                 $arrSizeText[] = 'width='.$arrSize[0];
             }

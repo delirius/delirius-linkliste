@@ -2,7 +2,11 @@
 
     <div class="linkliste_extended">
         <div><?= '$this->showimage: '.$this->showimage; ?></div>
-
+        <div><?= '$this->imagetype: '.$this->imagetype; ?></div>
+        <div><?= '$this->imagesize: '.$this->imagesize; ?></div>
+        <div>{{image::<?= $cat[$i]['image_path']; ?>?<?= $this->imagesize; ?>&alt=<?= $cat[$i]['url_text']; ?>}}</div>
+        <div>{{picture::<?= $cat[$i]['image_path']; ?>?<?= $this->imagesize; ?>&alt=<?= $cat[$i]['url_text']; ?>}}</div>
+        <hr>
         <?php foreach ($this->linkliste as $cat): ?>
 
             <div class="linkliste_categorie">
