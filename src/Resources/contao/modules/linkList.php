@@ -8,20 +8,20 @@ class linkList extends \Module
 {
 
     /**
-     * Template
-     * @var string
-     */
+    * Template
+    * @var string
+    */
     protected $strTemplate = 'linkliste_standard';
 
     /**
-     * Generate module
-     */
+    * Generate module
+    */
     protected function compile()
     {
 
         $objParams = \Database::getInstance()->prepare("SELECT * FROM tl_module WHERE id=?")
-                ->limit(1)
-                ->execute($this->id);
+        ->limit(1)
+        ->execute($this->id);
 
 
         //delirius_linkliste_categories
@@ -59,7 +59,6 @@ class linkList extends \Module
 
 
         /* imagesize */
-
         $arrSize = \StringUtil::deserialize($this->imgSize);
         if ( $arrSize[0] > 0 || $arrSize[1] > 0 )
         {
@@ -86,19 +85,9 @@ class linkList extends \Module
             $arrSizeText[] = 'mode=proportional';
         }
 
-
         $this->Template->imagesize = implode('&',$arrSizeText);
 
 
-        /* standard image */
-         if ($objParams->delirius_linkliste_standardfavicon != '')
-         {
-             $this->Template->standardimage = \StringUtil::binToUuid($objParams->delirius_linkliste_standardfavicon);
-
-             /* image_path */
-             $objFile = \FilesModel::findByUuid($objParams->delirius_linkliste_standardfavicon);
-             $standardimagePath = $objFile->path;
-         }
 
         $arrLinks = array();
 
@@ -134,7 +123,7 @@ class linkList extends \Module
 
 
             $arrNew = array
-                (
+            (
                 'class' => $class,
                 'categorietitle' => $ktitle,
                 'categoriedescription' => trim($objData->categoriedescription),
@@ -157,36 +146,30 @@ class linkList extends \Module
             {
                 if (strlen($objData->image) == 0)
                 {
-                    $objData->image = ($this->Template->standardimage ? $this->Template->standardimage : '');
+                    $objData->image = ($objParams->delirius_linkliste_standardfavicon ? $objParams->delirius_linkliste_standardfavicon : '');
                 }
 
-                $arrNew['image'] = \StringUtil::binToUuid($objData->image);
                 if ($this->Template->imagetype === 'picture')
-                 {
-                     $arrNew['image'] = '{{picture::'.$objData->image.'?'.$this->Template->imagesize.'&alt='.$arrNew['url_text'].'}}';
-                 }
-                 else
-                 {
-                     $arrNew['image'] = '{{image::'.$objData->image.'?'.$this->Template->imagesize.'&alt='.$arrNew['url_text'].'}}';
-                 }
-                 if (\defined('TL_MODE') && TL_MODE == 'BE')
+                {
+                    $arrNew['image'] = '{{picture::'.$objData->image.'?'.$this->Template->imagesize.'&alt='.$arrNew['url_text'].'}}';
+                }
+                else
+                {
+                    $arrNew['image'] = '{{image::'.$objData->image.'?'.$this->Template->imagesize.'&alt='.$arrNew['url_text'].'}}';
+                }
+                if (\defined('TL_MODE') && TL_MODE == 'BE')
                 {
                     $arrNew['image'] = \Controller::replaceInsertTags('{{image::'.$objData->image.'?width=70&height=70&mode=proportional&alt='.$arrNew['url_text'].'}}');
                 }
 
                 /* image_path Kompatibilität */
-                if (strlen($objData->image) == 0)
-                {
-                    $arrNew['image_path'] = $standardimagePath;
-                }
-                else
-                {
-                    $objFile = \FilesModel::findByUuid($objData->image);
-                    $arrNew['image_path'] = $objFile->path;
-                }
+                $objFile = \FilesModel::findByUuid($objData->image);
+                $arrNew['image_path'] = $objFile->path;
             }
 
+
             $arrNew['categorieimage'] = '';
+            /*delirius_linkliste_showcategoryimage,delirius_linkliste_categoryimagesize,delirius_linkliste_categorystandardimage*/
             if (strlen($objData->categorieimage) != 0)
             {
                 $objFile = \FilesModel::findById($objData->categorieimage);
