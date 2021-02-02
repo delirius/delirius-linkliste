@@ -4,7 +4,7 @@ use Doctrine\DBAL\Driver\Connection;
 use Patchwork\Utf8;
 
 
-class linkList extends \Module
+class LinkList extends \Module
 {
 
     /**
