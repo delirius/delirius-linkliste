@@ -2,3 +2,6 @@ Verwaltung von internen oder externen Links mit oder ohne Bilder in verschiedene
 
 
 !category(https://github.com/delirius/delirius-linkliste/preview/linklist_category.png?raw=true)
+
+![Screenshot](preview/linklist_category.png)
+![Screenshot](linklist_category.png)
