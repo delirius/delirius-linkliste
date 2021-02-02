@@ -1,6 +1,6 @@
 {
     "name": "delirius/delirius-linkliste",
-    "description": "Manage internal or external links with or without images in different categories. Can be used as a link collection, reference list, link blocks in the footer or the like.",
+    "description": "Manage internal or external links with or without images in different categories. With a click on the link icon the links can be validated. Can be used as a link collection, reference list, link blocks in the footer or similar.",
     "keywords": ["contao", "links", "categories", "linklist"],
     "type": "contao-bundle",
     "license": "LGPL-3.0-or-later",
