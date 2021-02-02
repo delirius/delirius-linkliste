@@ -2,4 +2,6 @@ Verwaltung von internen oder externen Links mit oder ohne Bilder in verschiedene
 
 ![Category](preview/linklist_category.png)
 
-![Link](preview/linklist_link.png.png)
+![Link](preview/linklist_link.png)
+
+![Link](preview/linklist_check.png)
