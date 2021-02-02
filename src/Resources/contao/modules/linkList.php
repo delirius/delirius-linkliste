@@ -141,12 +141,12 @@ class linkList extends \Module
                 'url' => trim($objData->url),
                 'target' => trim($objData->target),
                 'url_text' => trim($objData->url_text),
-                'title' => trim($objData->url_title),
+                'url_title' => trim($objData->url_title),
                 'description' => trim($objData->description),
             );
             if (strlen($arrNew['url_text']) == '')
             {
-                $arrNew['url_text'] = $arrNew['url'];
+                $arrNew['url_text'] = ($arrNew['url_title'] ? $arrNew['url_title'] : $arrNew['url']);
             }
 
             /* Image */
