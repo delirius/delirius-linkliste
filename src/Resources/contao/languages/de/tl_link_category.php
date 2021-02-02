@@ -3,7 +3,7 @@
 /**
  * Fields
  */
- $GLOBALS['TL_LANG']['tl_link_category']['title'] = array('Titel intern', 'Titel intern wird verwendet für die Darstellung und Reihenfolge im Backend (Footer 01, Footer 02, oä.).');
+ $GLOBALS['TL_LANG']['tl_link_category']['title'] = array('Titel intern', 'Titel intern wird verwendet für die Darstellung und Reihenfolge im <strong>Backend</strong> (Footer 01, Footer 02, oä.).');
  $GLOBALS['TL_LANG']['tl_link_category']['title_publik'] = array('Titel', '');
 $GLOBALS['TL_LANG']['tl_link_category']['published'] = array('Publiziert', '');
 $GLOBALS['TL_LANG']['tl_link_category']['description'] = array('Beschreibung', '');
