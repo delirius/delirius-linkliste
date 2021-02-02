@@ -17,4 +17,4 @@ $GLOBALS['BE_MOD']['content']['delirius_linkliste'] = array
 }
 
 
-$GLOBALS['FE_MOD']['miscellaneous']['delirius_linkliste'] = '\Delirius\Linkliste\LinkList';
+$GLOBALS['FE_MOD']['miscellaneous']['delirius_linkliste'] = '\Delirius\Linkliste\FrontendModule\LinkList';
