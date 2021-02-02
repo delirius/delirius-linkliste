@@ -34,21 +34,19 @@
                         <div><?= 'url_text: '.$cat[$i]['url_text']; ?></div>
                         <div><?= 'url_title: '.$cat[$i]['url_title']; ?></div>
                         <div><?= 'description: '.$cat[$i]['description']; ?></div>
-
-                        <a href="<?= $cat[$i]['url']; ?>" <?= ($cat[$i]['target'] ? LINK_NEW_WINDOW : LINK_BLUR); ?><?= ($cat[$i]['url_title'] ? ' alt="'.$cat[$i]['url_title'].'"' : ''); ?>>
-                            <?php if ($this->showimage && $cat[$i]['image']): ?>
-                                <figure class="image_container">
-                                    <?= $cat[$i]['image']; ?>
-                                </figure>
-                            <?php endif; ?>
-                            <?= $cat[$i]['url_text']; ?>
-                            <?php if ($cat[$i]['title'] != ''): ?>
-                                <div><strong><?= $cat[$i]['title']; ?></strong></div>
-                            <?php endif; ?>
+                        <div>Example with link
+                            <a href="<?= $cat[$i]['url']; ?>" <?= ($cat[$i]['target'] ? LINK_NEW_WINDOW : LINK_BLUR); ?><?= ($cat[$i]['url_title'] ? ' alt="'.$cat[$i]['url_title'].'"' : ''); ?>>
+                                <div><strong><?= $cat[$i]['url_text']; ?></strong></div>
+                                <?php if ($this->showimage && $cat[$i]['image']): ?>
+                                    <figure class="image_container">
+                                        <?= $cat[$i]['image']; ?>
+                                    </figure>
+                                <?php endif; ?>
+                            </a>
                             <?php if ($cat[$i]['description'] != ''): ?>
                                 <div><?= $cat[$i]['description']; ?></div>
                             <?php endif; ?>
-                        </a>
+                        </div>
                     </div>
                 <?php endfor; ?>
             </div>

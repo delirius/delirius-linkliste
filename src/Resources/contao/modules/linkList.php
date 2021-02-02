@@ -159,17 +159,19 @@ class linkList extends \Module
                     $objData->image = ($objParams->delirius_linkliste_standardfavicon ? $objParams->delirius_linkliste_standardfavicon : '');
                 }
 
+                $attrAlt = (strlen($objData->url_title) > 0 ? '&alt='.$objData->url_title : '');
+
                 if ($this->Template->imagetype === 'picture')
                 {
-                    $arrNew['image'] = '{{picture::'.$objFile->path.'?'.$this->Template->imagesize.'&alt='.$arrNew['url_text'].'}}';
+                    $arrNew['image'] = '{{picture::'.$objFile->path.'?'.$this->Template->imagesize.$attrAlt.'}}';
                 }
                 else
                 {
-                    $arrNew['image'] = '{{image::'.$objFile->path.'?'.$this->Template->imagesize.'&alt='.$arrNew['url_text'].'}}';
+                    $arrNew['image'] = '{{image::'.$objFile->path.'?'.$this->Template->imagesize.$attrAlt.'}}';
                 }
                 if (\defined('TL_MODE') && TL_MODE == 'BE')
                 {
-                    $arrNew['image'] = \Controller::replaceInsertTags('{{image::'.$objFile->path.'?width=70&height=70&mode=proportional&alt='.$arrNew['url_text'].'}}');
+                    $arrNew['image'] = \Controller::replaceInsertTags('{{image::'.$objFile->path.'?width=70&height=70&mode=proportional'.$attrAlt.'}}');
                 }
 
                 /* image_path */
