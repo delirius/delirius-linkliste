@@ -147,7 +147,7 @@ class LinkList extends \Module
             );
             if (strlen($arrNew['url_text']) == '')
             {
-                $arrNew['url_text'] = $arrNew['url'];
+                $arrNew['url_text'] = str_replace( array('http://','https://'), '', $arrNew['url'] );
             }
 
             /* Image */
