@@ -1,4 +1,4 @@
-Verwaltung von internen oder externen Links mit oder ohne Bilder in verschiedenen Kategorien. Einsetzbar als Linksammlung, Referenzliste, Linkblöcke im Fussbereich oä.
+Verwaltung von internen oder externen Links mit oder ohne Bilder in verschiedenen Kategorien. Mit einen Klick auf das Linksymbol können die Links validiert werden. Einsetzbar als Linksammlung, Referenzliste, Linkblöcke im Fussbereich oä.
 
 
 <img src="https://user-images.githubusercontent.com/2039398/106657016-c4bd2b00-659b-11eb-8866-d98a4120c460.png" width="800">
