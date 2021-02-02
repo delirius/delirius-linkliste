@@ -26,16 +26,16 @@
                         <div><?= 'image_path: '.$cat[$i]['image_path']; ?></div>
                         <div><?= 'Inserttag with image_path: '; ?>
                             <?php if ($this->imagetype == 'picture'): ?>
-                                <div>{{picture::<?= $cat[$i]['image_path']; ?>?<?= $this->imagesize; ?>&alt=<?= $cat[$i]['url_text']; ?>}}</div>
+                                <div>{{picture::<?= $cat[$i]['image_path']; ?>?<?= $this->imagesize; ?><?= ($cat[$i]['url_title'] ? '&alt='.$cat[$i]['url_title'] : ''); ?>}}</div>
                             <?php else: ?>
-                                <div>{{image::<?= $cat[$i]['image_path']; ?>?<?= $this->imagesize; ?>&alt=<?= $cat[$i]['url_text']; ?>}}</div>
+                                <div>{{image::<?= $cat[$i]['image_path']; ?>?<?= $this->imagesize; ?><?= ($cat[$i]['url_title'] ? '&alt='.$cat[$i]['url_title'] : ''); ?>}}</div>
                             <?php endif; ?>
                         </div>
                         <div><?= 'url_text: '.$cat[$i]['url_text']; ?></div>
                         <div><?= 'url_title: '.$cat[$i]['url_title']; ?></div>
                         <div><?= 'description: '.$cat[$i]['description']; ?></div>
 
-                        <a href="<?= $cat[$i]['url']; ?>" <?= ($cat[$i]['target'] ? LINK_NEW_WINDOW : LINK_BLUR); ?> alt="<?= $cat[$i]['url_text']; ?>">
+                        <a href="<?= $cat[$i]['url']; ?>" <?= ($cat[$i]['target'] ? LINK_NEW_WINDOW : LINK_BLUR); ?><?= ($cat[$i]['url_title'] ? ' alt="'.$cat[$i]['url_title'].'"' : ''); ?>>
                             <?php if ($this->showimage && $cat[$i]['image']): ?>
                                 <figure class="image_container">
                                     <?= $cat[$i]['image']; ?>

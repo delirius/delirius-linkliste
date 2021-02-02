@@ -146,7 +146,7 @@ class linkList extends \Module
             );
             if (strlen($arrNew['url_text']) == '')
             {
-                $arrNew['url_text'] = ($arrNew['url_title'] ? $arrNew['url_title'] : $arrNew['url']);
+                $arrNew['url_text'] = $arrNew['url'];
             }
 
             /* Image */

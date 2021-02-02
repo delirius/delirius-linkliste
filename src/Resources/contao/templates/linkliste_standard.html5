@@ -17,7 +17,7 @@
                 <?php for ($i = 0; $i < $cc; $i++): ?>
                     <?php if ($cat[$i]['url'] != ''): ?>
                         <div class="linkliste_item<?= $cat[$i]['class']; ?>">
-                            <a href="<?= $cat[$i]['url']; ?>" <?= ($cat[$i]['target'] ? LINK_NEW_WINDOW : LINK_BLUR); ?>  alt="<?= $cat[$i]['url_text']; ?>">
+                            <a href="<?= $cat[$i]['url']; ?>" <?= ($cat[$i]['target'] ? LINK_NEW_WINDOW : LINK_BLUR); ?><?= ($cat[$i]['url_title'] ? ' alt="'.$cat[$i]['url_title'].'"' : ''); ?>>
                                 <?php if ($this->showimage && $cat[$i]['image']): ?>
                                     <figure class="image_container">
                                         <?= $cat[$i]['image']; ?>
