@@ -280,25 +280,33 @@ class class_link_dat extends Backend
 
         if ($linkliste_url == '')
         {
-            $objData = \Database::getInstance()->prepare("SELECT url FROM tl_link_data WHERE id = ?")->execute($linkliste_id);
+            $objData = \Database::getInstance()->prepare("SELECT url,published FROM tl_link_data WHERE id = ?")->execute($linkliste_id);
             $linkliste_url = $objData->url;
+            $linkliste_published = $objData->published;
         }
         if ($linkliste_url == '')
         {
             return false;
         }
 
-        $objDataPid = \Database::getInstance()->prepare("SELECT pid FROM tl_link_data WHERE id = ?")->execute($linkliste_id);
+        $objDataPid = \Database::getInstance()->prepare("SELECT pid,published FROM tl_link_data WHERE id = ?")->execute($linkliste_id);
         $linkliste_pid = $objDataPid->pid;
+        $linkliste_published = $objDataPid->published;
 
         \Database::getInstance()->prepare("UPDATE tl_link_data SET be_error = 0, be_warning = 0, be_text = '' WHERE id = ?")->execute($linkliste_id);
 
         $linkliste_url = html_entity_decode($linkliste_url); // Anchor
 
+        if ($linkliste_published != 1)
+        {
+            $error = 'No check unpublished link';
 
+            \Database::getInstance()->prepare("UPDATE tl_link_data SET be_warning = 1, be_text = ?  WHERE id = ?")->execute($error, $linkliste_id);
 
+        }
         /* Link intern/extern */
-        if (strstr($linkliste_url, 'link_url')) {
+        elseif (strstr($linkliste_url, 'link_url'))
+        {
             // Link intern
 
 
@@ -349,6 +357,7 @@ class class_link_dat extends Backend
             echo '<pre>';
             print_r($objRequest);
             echo '</pre>';
+            exit;
         endif;
 
         $error = '';
