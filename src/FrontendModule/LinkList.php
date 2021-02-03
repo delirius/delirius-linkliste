@@ -111,6 +111,7 @@ class LinkList extends \Module
         }
 
         $j = 0;
+        $classcat = 'first';
         while ($objData->next())
         {
             $j++;
@@ -134,6 +135,7 @@ class LinkList extends \Module
             $arrNew = array
             (
                 'class' => $class,
+                'categorieclass' => $classcat,
                 'categorietitle' => $ktitle,
                 'categoriedescription' => trim($objData->categoriedescription),
                 'categorieimage' => trim($objData->categorieimage),
@@ -188,6 +190,7 @@ class LinkList extends \Module
             }
 
             $arrLinks[$objData->catid][] = $arrNew;
+            $classcat = '';
         }
         $this->Template->linkliste = $arrLinks;
         $this->Template->showimage = $objParams->delirius_linkliste_showimage;
