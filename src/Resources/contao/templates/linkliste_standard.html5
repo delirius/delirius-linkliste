@@ -5,6 +5,7 @@
 
             <div class="linkliste_wrapper">
                 <div class="linkliste_categorie">
+                    <?= ($cat[0]['categorieclass'] !== 'first' ? '<br>' : ''); ?>
                     <h3><?= $cat[0]['categorietitle']; ?> (<?= $cat[0]['categoriecount']; ?>)</h3>
                     <?php if ($cat[0]['categoriedescription']): ?>
                         <div class="linkliste_categorietext"><?= $cat[0]['categoriedescription']; ?></div>

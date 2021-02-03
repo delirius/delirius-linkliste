@@ -10,6 +10,7 @@
             <div class="linkliste_categorie">
                 <div><?= 'categorietitle: '.$cat[0]['categorietitle']; ?></div>
                 <div><?= 'categoriecount: '.$cat[0]['categoriecount']; ?></div>
+                <div><?= 'categorieclass: '.$cat[0]['categorieclass']; ?></div>
                 <div><?= 'categoriedescription: '.$cat[0]['categoriedescription']; ?></div>
                 <div><?= 'categorieimage: '.$cat[0]['categorieimage']; ?></div>
                 <div>{{image::<?= $cat[0]['categorieimage']; ?>?width=240&height=240&mode=proportional&alt=<?= $cat[0]['categorietitle']; ?>}}</div>
@@ -18,10 +19,9 @@
                 <?php $cc = count($cat); ?>
                 <?php for ($i = 0; $i < $cc; $i++): ?>
                     <div class="linkliste_item<?= $cat[$i]['class']; ?>">
-
-                        <div><?= 'class: '.$cat[$i]['class']; ?></div>
                         <div><?= 'url: '.$cat[$i]['url']; ?></div>
                         <div><?= 'target: '.$cat[$i]['target']; ?></div>
+                        <div><?= 'class: '.$cat[$i]['class']; ?></div>
                         <div><?= 'image: '.$cat[$i]['image']; ?></div>
                         <div><?= 'image_path: '.$cat[$i]['image_path']; ?></div>
                         <div><?= 'Inserttag with image_path: '; ?>
